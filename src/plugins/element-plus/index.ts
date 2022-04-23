@@ -36,7 +36,9 @@ import {
   ElCard,
   // 指令
   ElLoading,
-  ElInfiniteScroll
+  ElInfiniteScroll,
+  ElTable,
+  ElTableColumn
 } from "element-plus";
 
 // Directives
@@ -76,7 +78,9 @@ const components = [
   ElCollapse,
   ElCollapseItem,
   ElDialog,
-  ElCard
+  ElCard,
+  ElTable,
+  ElTableColumn
 ];
 
 export function useElementPlus(app: App) {

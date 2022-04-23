@@ -28,3 +28,7 @@ menus:
   permission: 权限管理
   permissionPage: 页面权限
   permissionButton: 按钮权限
+demo:
+  home: 演示
+  tablepage: TABLE页面
+  todo: TODO页面
