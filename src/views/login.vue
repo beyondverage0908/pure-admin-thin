@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { initRouter } from "/@/router/utils";
 import { storageSession } from "/@/utils/storage";
 import { addClass, removeClass } from "/@/utils/operate";
+import * as captchApi from "/@/api/captch";
 import bg from "/@/assets/login/bg.png";
 import avatar from "/@/assets/login/avatar.svg?component";
 import illustration from "/@/assets/login/illustration.svg?component";
@@ -39,6 +40,13 @@ function onPwdBlur() {
   if (pwd.value.length === 0)
     removeClass(document.querySelector(".pwd"), "focus");
 }
+
+onMounted(() => {
+  captchApi.getCaptchContext({
+    AppId: "201901231134",
+    Scope: "ICM"
+  });
+});
 </script>
 
 <template>

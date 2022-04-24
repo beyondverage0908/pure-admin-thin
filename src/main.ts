@@ -7,6 +7,7 @@ import { useI18n } from "../src/plugins/i18n";
 import { MotionPlugin } from "@vueuse/motion";
 import { useElementPlus } from "../src/plugins/element-plus";
 import { injectResponsiveStorage } from "/@/utils/storage/responsive";
+import { useEMCaptcha } from "/@/plugins/em-captcha";
 
 import "animate.css";
 import "virtual:windi.css";
@@ -42,5 +43,6 @@ getServerConfig(app).then(async config => {
   injectResponsiveStorage(app, config);
   setupStore(app);
   app.use(MotionPlugin).use(useI18n).use(useElementPlus);
+  useEMCaptcha();
   app.mount("#app");
 });

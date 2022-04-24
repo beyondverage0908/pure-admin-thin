@@ -78,6 +78,9 @@ declare global {
     VITE_PROXY_DOMAIN_REAL: string;
     VITE_ROUTER_HISTORY: string;
     VITE_LEGACY: boolean;
+    PROD?: boolean;
+    DEV?: boolean;
+    SSR?: boolean;
   }
 
   declare interface ServerConfigs {

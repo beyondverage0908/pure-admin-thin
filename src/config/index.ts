@@ -3,13 +3,13 @@ import axios from "axios";
 import { loadEnv } from "@build/index";
 
 let config: object = {};
-const { VITE_PUBLIC_PATH } = loadEnv();
+const Env = loadEnv();
 
 const setConfig = (cfg?: unknown) => {
-  config = Object.assign(config, cfg);
+  config = Object.assign(config, Env, cfg);
 };
 
-const getConfig = (key?: string): ServerConfigs => {
+const getConfig = (key?: string): ServerConfigs & ViteEnv => {
   if (typeof key === "string") {
     const arr = key.split(".");
     if (arr && arr.length) {
@@ -33,7 +33,7 @@ export const getServerConfig = async (app: App): Promise<undefined> => {
   return axios({
     baseURL: "",
     method: "get",
-    url: `${VITE_PUBLIC_PATH}serverConfig.json`
+    url: `${Env.VITE_PUBLIC_PATH}serverConfig.json`
   })
     .then(({ data: config }) => {
       let $config = app.config.globalProperties.$config;

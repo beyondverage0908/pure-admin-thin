@@ -1,6 +1,6 @@
 {
   "name": "pure-admin-thin",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "private": true,
   "scripts": {
     "dev": "cross-env --max_old_space_size=4096 vite",
