@@ -13,6 +13,8 @@ const router = useRouter();
 
 let user = ref("admin");
 let pwd = ref("123456");
+let contextId = "";
+let capt: EMCaptcha = null;
 
 const onLogin = (): void => {
   storageSession.setItem("info", {
@@ -41,11 +43,36 @@ function onPwdBlur() {
     removeClass(document.querySelector(".pwd"), "focus");
 }
 
-onMounted(() => {
-  captchApi.getCaptchContext({
+function refreshCaptcha() {
+  if (!contextId) return;
+  capt = new EMCaptcha({
+    containerId: "containerId",
+    appid: "201901231134",
+    captchaContextId: contextId,
+    product: "float"
+  })
+    .onSuccess(() => {
+      console.log("成功");
+    })
+    .onError(() => {
+      console.log("失败");
+    });
+  const accountId = "accountIdHide"; // 账户input控件
+  const input = document.getElementById(accountId) as any;
+  const account = input.value as string;
+  const pwd = "111111rrrrrrrrrrrrrrrr";
+  capt.refresh(account, pwd);
+}
+
+onMounted(async () => {
+  const data = await captchApi.getCaptchContext({
     AppId: "201901231134",
     Scope: "ICM"
   });
+  if (data && data.success) {
+    contextId = data.data;
+    refreshCaptcha();
+  }
 });
 </script>
 
@@ -132,12 +159,37 @@ onMounted(() => {
             />
           </div>
         </div>
+        <!-- 验证码相关 -->
+        <input id="contextId" type="hidden" />
+        <input id="accountIdHide" type="hidden" value="admin" />
+        <div
+          id="containerId"
+          v-motion
+          :initial="{
+            opacity: 0,
+            y: 10
+          }"
+          :enter="{
+            opacity: 1,
+            y: 0,
+            transition: {
+              delay: 400
+            }
+          }"
+          style="
+            border: 1px solid #d7dde4;
+            width: 100%;
+            height: 46px;
+            margin-bottom: 10px;
+          "
+        />
+        <!-- end -->
         <button
           class="btn"
           v-motion
           :initial="{
             opacity: 0,
-            y: 10
+            y: 20
           }"
           :enter="{
             opacity: 1,

@@ -96,5 +96,12 @@
       <div class="loader"></div>
     </div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      const PROD = false;
+      const url = PROD
+        ? "https://cfgpassport2.eastmoney.com/captcha/scripts/em_capt.js"
+        : "https://cfgpassportuat2.eastmoney.com/captcha/scripts/em_capt.js";
+      document.write("<script src=" + url + "><\/script>");
+    </script>
   </body>
 </html>
