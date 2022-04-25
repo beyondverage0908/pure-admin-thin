@@ -13,6 +13,7 @@ module.exports = {
 
     // index.d.ts
     // global.d.ts
+    // captcha.d.ts
     Fn: "readonly",
     PromiseFn: "readonly",
     RefType: "readonly",
@@ -25,6 +26,7 @@ module.exports = {
     global: "readonly",
     ForDataType: "readonly",
     ComponentRoutes: "readonly",
+    EMCaptcha: "readonly",
 
     // script setup
     defineProps: "readonly",
