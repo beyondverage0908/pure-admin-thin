@@ -1,4 +1,4 @@
-import { h, defineComponent } from "vue";
+import { h, defineComponent, withDirectives, resolveDirective } from "vue";
 import * as captchApi from "/@/api/captch";
 
 let compnentInstance = null;
@@ -69,8 +69,23 @@ const captchComponent = defineComponent({
         width: "100%",
         height: "46px",
         marginBottom: "10px"
+      },
+      initial: {
+        pacity: 0,
+        y: 40
+      },
+      enter: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          delay: 400
+        }
       }
     });
+    const VMotion = resolveDirective("motion");
+    const directiveContainer = VMotion
+      ? withDirectives(container, [[VMotion]])
+      : container;
     return h(
       "div",
       {
@@ -78,7 +93,7 @@ const captchComponent = defineComponent({
           display: "inline"
         }
       },
-      [contextIdInput, accountIdHideInput, container]
+      [contextIdInput, accountIdHideInput, directiveContainer]
     );
   },
   setup() {

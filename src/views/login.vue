@@ -129,21 +129,7 @@ function handleCheckSuccess(cxtId: string) {
             />
           </div>
         </div>
-        <EMCaptcha
-          @on-success="handleCheckSuccess"
-          v-motion
-          :initial="{
-            opacity: 0,
-            y: 10
-          }"
-          :enter="{
-            opacity: 1,
-            y: 0,
-            transition: {
-              delay: 400
-            }
-          }"
-        />
+        <EMCaptcha @on-success="handleCheckSuccess" />
         <button
           class="btn"
           v-motion

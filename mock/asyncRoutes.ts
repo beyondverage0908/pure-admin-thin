@@ -39,7 +39,7 @@ function setDifAuthority(authority, routes) {
 
 export default [
   {
-    url: "/getAsyncRoutes",
+    url: "/p2hmgr/api/getAsyncRoutes",
     method: "get",
     response: ({ query }) => {
       if (query.name === "admin") {
