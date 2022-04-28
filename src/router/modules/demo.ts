@@ -30,6 +30,15 @@ export default {
       path: "/demo/todo",
       name: "demo-todo",
       component: () => import("/@/views/demo/todo/index.vue")
+    },
+    {
+      path: "/demo/role",
+      name: "demo-role",
+      component: () => import("/@/views/demo/role/index.vue"),
+      meta: {
+        title: $t("demo.role"),
+        i18n: true
+      }
     }
   ]
 };

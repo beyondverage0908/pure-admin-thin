@@ -38,7 +38,8 @@ import {
   ElLoading,
   ElInfiniteScroll,
   ElTable,
-  ElTableColumn
+  ElTableColumn,
+  ElTree
 } from "element-plus";
 
 // Directives
@@ -80,7 +81,8 @@ const components = [
   ElDialog,
   ElCard,
   ElTable,
-  ElTableColumn
+  ElTableColumn,
+  ElTree
 ];
 
 export function useElementPlus(app: App) {
