@@ -1,6 +1,7 @@
 <template>
   <div class="custom-tree-container">
     <el-tree
+      ref="treeRef"
       :data="dataSource"
       show-checkbox
       node-key="id"
@@ -8,6 +9,8 @@
       check-strictly
       check-on-click-node
       :expand-on-click-node="false"
+      @check-change="checkChange"
+      @check="check"
     >
       <template #default="{ node, data }">
         <span class="custom-tree-node">
@@ -23,6 +26,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { ElTree } from "element-plus";
 import { ref } from "vue";
 import type Node from "element-plus/es/components/tree/src/model/node";
 
@@ -32,6 +36,8 @@ interface Tree {
   children?: Tree[];
 }
 let id = 1000;
+
+const treeRef = ref<InstanceType<typeof ElTree>>();
 
 const append = (data: Tree) => {
   const newChild = { id: id++, label: "testtest", children: [] };
@@ -48,6 +54,35 @@ const remove = (node: Node, data: Tree) => {
   const index = children.findIndex(d => d.id === data.id);
   children.splice(index, 1);
   dataSource.value = [...dataSource.value];
+};
+
+const checkChange = (node: Node, isChecked: boolean) => {
+  // setChecked
+  console.log(node.id, isChecked);
+  if (isChecked) {
+    // 查找树的所有子节点
+    getChildNodeKeys(node.id, dataSource);
+  } else {
+    // 重置所有子节点
+    getChildNodeKeys(node.id, dataSource);
+  }
+  // treeRef.value!.setCheckedKeys([node.id], false);
+};
+
+const check = (node: Node) => {
+  console.log(node);
+};
+/**
+ * 获取当前节点下的所有子节点列表
+ */
+const getChildNodeKeys: number[] = (key: string, dataSource: Tree[]) => {
+  const getKeys = (treeDataSource: Tree[]) => {
+    const find = treeDataSource.find(node => node.id === key);
+    if (find && find.children && find.children.length) {
+      getKeys(find.children);
+    }
+  };
+  getKeys(dataSource);
 };
 
 const dataSource = ref<Tree[]>([
