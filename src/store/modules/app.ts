@@ -66,7 +66,6 @@ export const useAppStore = defineStore({
       if (data && data.success) {
         this.privCodes = data.data;
       }
-      return this.privCodes;
     }
   }
 });

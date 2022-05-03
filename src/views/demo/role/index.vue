@@ -14,18 +14,23 @@ export default defineComponent({
   components: {
     PrivTree
   },
-  async setup() {
+  setup() {
     const checkedKeys = ref([12, 13]);
     const handleClick = () => {
-      console.log(checkedKeys.value);
       checkedKeys.value = [10, 11, 12, 13];
     };
-    const privCodes = await useAppStoreHook().getAppPrivs();
+    const appStore = useAppStoreHook();
+    appStore.getAppPrivs();
     return {
       handleClick,
       checkedKeys,
-      privCodes
+      appStore
     };
+  },
+  computed: {
+    privCodes() {
+      return this.appStore.privCodes;
+    }
   }
 });
 </script>
