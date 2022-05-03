@@ -1,4 +1,5 @@
 import { App, Component } from "vue";
+import * as ElementPlusVueIcons from "@element-plus/icons-vue";
 import {
   ElTag,
   ElBreadcrumb,
@@ -90,6 +91,9 @@ export function useElementPlus(app: App) {
   components.forEach((component: Component) => {
     app.component(component.name, component);
   });
+  for (const name in ElementPlusVueIcons) {
+    app.component(name, ElementPlusVueIcons[name]);
+  }
   // 注册指令
   plugins.forEach(plugin => {
     app.use(plugin);

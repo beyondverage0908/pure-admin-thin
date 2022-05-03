@@ -6,7 +6,7 @@
   },
   "editor.tabSize": 2,
   "editor.formatOnPaste": true,
-  "files.autoSave": "afterDelay",
+  "files.autoSave": "onFocusChange",
   "git.confirmSync": false,
   "workbench.startupEditor": "newUntitledFile",
   "editor.suggestSelection": "first",
@@ -33,5 +33,6 @@
   "i18n-ally.enabledParsers": ["yaml", "js"],
   "i18n-ally.sourceLanguage": "en",
   "i18n-ally.displayLanguage": "zh-CN",
-  "i18n-ally.enabledFrameworks": ["vue"]
+  "i18n-ally.enabledFrameworks": ["vue"],
+  "editor.fontSize": 13
 }

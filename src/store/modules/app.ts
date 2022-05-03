@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import { getConfig } from "/@/config";
 import { storageLocal } from "/@/utils/storage";
 import { deviceDetection } from "/@/utils/deviceDetection";
+import { getPrivs } from "/@/api/app";
 
 export const useAppStore = defineStore({
   id: "pure-app",
@@ -18,7 +19,8 @@ export const useAppStore = defineStore({
     // 这里的layout用于监听容器拖拉后恢复对应的导航模式
     layout:
       storageLocal.getItem("responsive-layout")?.layout ?? getConfig().Layout,
-    device: deviceDetection() ? "mobile" : "desktop"
+    device: deviceDetection() ? "mobile" : "desktop",
+    privCodes: []
   }),
   getters: {
     getSidebarStatus() {
@@ -58,6 +60,13 @@ export const useAppStore = defineStore({
     },
     setLayout(layout) {
       this.layout = layout;
+    },
+    async getAppPrivs() {
+      const data = await getPrivs();
+      if (data && data.success) {
+        this.privCodes = data.data;
+      }
+      return this.privCodes;
     }
   }
 });

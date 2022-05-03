@@ -4,6 +4,7 @@ specifiers:
   "@commitlint/cli": 13.1.0
   "@commitlint/config-conventional": 13.1.0
   "@ctrl/tinycolor": ^3.4.0
+  "@element-plus/icons-vue": ^1.1.4
   "@iconify-icons/ep": ^1.2.4
   "@iconify-icons/fa": ^1.2.2
   "@iconify-icons/fa-solid": ^1.2.2
@@ -90,6 +91,7 @@ specifiers:
 
 dependencies:
   "@ctrl/tinycolor": 3.4.0
+  "@element-plus/icons-vue": 1.1.4_vue@3.2.33
   "@pureadmin/components": 1.0.6_vue@3.2.33
   "@vueuse/core": 8.2.6_vue@3.2.33
   "@vueuse/motion": 2.0.0-beta.12_vue@3.2.33

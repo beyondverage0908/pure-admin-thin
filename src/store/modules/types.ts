@@ -1,4 +1,5 @@
 import { RouteRecordName } from "vue-router";
+import { Tree } from "/@/components/PrivTree";
 
 export type cacheType = {
   mode: string;
@@ -19,6 +20,7 @@ export type appType = {
   };
   layout: string;
   device: string;
+  privCodes?: Tree[];
 };
 
 export type multiType = {
