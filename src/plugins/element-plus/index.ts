@@ -38,9 +38,15 @@ import {
   // 指令
   ElLoading,
   ElInfiniteScroll,
+  // 组件
   ElTable,
   ElTableColumn,
-  ElTree
+  ElTree,
+  ElContainer,
+  ElMain,
+  ElAside,
+  ElForm,
+  ElFormItem
 } from "element-plus";
 
 // Directives
@@ -83,7 +89,12 @@ const components = [
   ElCard,
   ElTable,
   ElTableColumn,
-  ElTree
+  ElTree,
+  ElContainer,
+  ElMain,
+  ElAside,
+  ElForm,
+  ElFormItem
 ];
 
 export function useElementPlus(app: App) {

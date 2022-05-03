@@ -29,7 +29,7 @@ menus:
   permissionPage: Page Permission
   permissionButton: Button Permission
 demo:
-  home: Demo
+  home: SystemManage
   tablepage: Table Page
   todo: TODO
   role: Role Manage

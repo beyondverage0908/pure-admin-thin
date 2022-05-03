@@ -29,7 +29,7 @@ menus:
   permissionPage: 页面权限
   permissionButton: 按钮权限
 demo:
-  home: 演示
+  home: 系统管理
   tablepage: TABLE页面
   todo: TODO页面
   role: 角色管理

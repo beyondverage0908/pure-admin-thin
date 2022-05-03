@@ -2,14 +2,8 @@ import { h, defineComponent, ref, resolveComponent, watch } from "vue";
 import type { ElTree } from "element-plus";
 // import type Node from "element-plus/es/components/tree/src/model/node";
 // import { dataSource } from "./data-source";
+import { NetTree } from "./util";
 
-export interface Tree {
-  id: number;
-  label: string;
-  code?: string;
-  parentId?: number;
-  children?: Tree[];
-}
 /**
  * 事件枚举
  */
@@ -77,12 +71,12 @@ const PrivTree = defineComponent({
     /**
      * 获取当前节点下的所有子节点列表
      */
-    const getAllChildrenKeys = (treeNode: Tree): number[] => {
+    const getAllChildrenKeys = (treeNode: NetTree): number[] => {
       const keys: number[] = [];
-      function getChildrenKeys(node: Tree) {
+      function getChildrenKeys(node: NetTree) {
         if (!node.children || !node.children.length) return;
         node.children.forEach(tree => {
-          keys.push(tree.id);
+          keys.push(tree.privId);
           if (tree.children) getChildrenKeys(tree);
         });
       }
@@ -92,13 +86,14 @@ const PrivTree = defineComponent({
     /**
      * 获取当前节点的所有父节点
      */
-    const getAllParentKeys = (treeNode: Tree): number[] => {
+    const getAllParentKeys = (treeNode: NetTree): number[] => {
       const keys: number[] = [];
-      function getParentKeys(node: Tree) {
-        if (node.parentId === undefined || node.parentId === null) return;
-        keys.push(node.parentId);
-        const parentNode = treeRef!.getNode(node.parentId);
-        getParentKeys(parentNode.data as Tree);
+      function getParentKeys(node: NetTree) {
+        if (node.parentPrivId === undefined || node.parentPrivId === null)
+          return;
+        keys.push(node.parentPrivId);
+        const parentNode = treeRef!.getNode(node.parentPrivId);
+        getParentKeys(parentNode.data as NetTree);
       }
       getParentKeys(treeNode);
       return keys;
@@ -112,9 +107,12 @@ const PrivTree = defineComponent({
      * @param node
      * @param param1
      */
-    const check = (node: Tree, { checkedKeys }: { checkedKeys: number[] }) => {
+    const check = (
+      node: NetTree,
+      { checkedKeys }: { checkedKeys: number[] }
+    ) => {
       // 当前节点选中状态
-      const isChecked = checkedKeys.includes(node.id);
+      const isChecked = checkedKeys.includes(node.privId);
       const childrenNodeKeys = getAllChildrenKeys(node);
       const parentNodeKeys = getAllParentKeys(node);
       setCheckedByKeys(childrenNodeKeys, isChecked);
@@ -126,7 +124,7 @@ const PrivTree = defineComponent({
     const ElIcon = resolveComponent("ElIcon");
     const Tickets = h(resolveComponent("Tickets"));
     const Link = h(resolveComponent("Link"));
-    const renderContent = (h, { data }: { data: Tree }) => {
+    const renderContent = (h, { data }: { data: NetTree }) => {
       return h(
         "span",
         {
@@ -145,27 +143,29 @@ const PrivTree = defineComponent({
               style: {
                 width: "50%",
                 display: "flex",
-                alignItems: "center"
+                alignItems: "center",
+                fontSize: "12px"
               }
             },
             [
               h(ElIcon, { style: { marginRight: "8px" } }, () => Tickets),
-              data.label
+              data.privName
             ]
           ),
-          data.code
+          data.privCode
             ? h(
                 "span",
                 {
                   style: {
                     display: "flex",
                     width: "50%",
-                    alignItems: "center"
+                    alignItems: "center",
+                    fontSize: "12px"
                   }
                 },
                 [
                   h(ElIcon, { style: { marginRight: "8px" } }, () => Link),
-                  data.code || ""
+                  data.privCode || ""
                 ]
               )
             : null

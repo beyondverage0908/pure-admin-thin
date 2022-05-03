@@ -5,6 +5,7 @@ import { getConfig } from "/@/config";
 import { storageLocal } from "/@/utils/storage";
 import { deviceDetection } from "/@/utils/deviceDetection";
 import { getPrivs } from "/@/api/app";
+import { recursiveConstructTreeData } from "/@/components/PrivTree/util";
 
 export const useAppStore = defineStore({
   id: "pure-app",
@@ -20,7 +21,8 @@ export const useAppStore = defineStore({
     layout:
       storageLocal.getItem("responsive-layout")?.layout ?? getConfig().Layout,
     device: deviceDetection() ? "mobile" : "desktop",
-    privCodes: []
+    privCodes: [],
+    roles: []
   }),
   getters: {
     getSidebarStatus() {
@@ -64,7 +66,7 @@ export const useAppStore = defineStore({
     async getAppPrivs() {
       const data = await getPrivs();
       if (data && data.success) {
-        this.privCodes = data.data;
+        this.privCodes = [recursiveConstructTreeData(data.data)];
       }
     }
   }
