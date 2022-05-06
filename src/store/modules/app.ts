@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { getConfig } from "/@/config";
 import { storageLocal } from "/@/utils/storage";
 import { deviceDetection } from "/@/utils/deviceDetection";
-import { getPrivs } from "/@/api/role";
+import { getPrivs, getOperatePrivs } from "/@/api/role";
 import { recursiveConstructTreeData } from "/@/components/PrivTree/util";
 
 export const useAppStore = defineStore({
@@ -21,8 +21,8 @@ export const useAppStore = defineStore({
     layout:
       storageLocal.getItem("responsive-layout")?.layout ?? getConfig().Layout,
     device: deviceDetection() ? "mobile" : "desktop",
-    privCodes: [],
-    roles: []
+    // 菜单权限
+    privCodes: []
   }),
   getters: {
     getSidebarStatus() {
@@ -64,10 +64,11 @@ export const useAppStore = defineStore({
       this.layout = layout;
     },
     async getAppPrivs() {
-      const data = await getPrivs();
-      if (data && data.success) {
-        this.privCodes = [recursiveConstructTreeData(data.data)];
-      }
+      const { data: menuPrivs } = await getPrivs();
+      const { data: operatePrivs } = await getOperatePrivs();
+      if (!menuPrivs) this.privCodes = [];
+      const privs = menuPrivs.concat(operatePrivs || []);
+      this.privCodes = [recursiveConstructTreeData(privs)];
     }
   }
 });

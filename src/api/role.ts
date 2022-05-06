@@ -1,8 +1,15 @@
 import { http } from "../utils/http";
 
-// 获取权限
+// 获取菜单权限
 export const getPrivs = (): HttpResponseType => {
   return http.request("get", "/privs");
+};
+/**
+ * 获取按钮权限
+ * @returns
+ */
+export const getOperatePrivs = (): HttpResponseType => {
+  return http.request("get", "/operate");
 };
 /**
  * 添加角色

@@ -1,36 +1,32 @@
 <template>
   <div>
     <PrivTree :data-source="privCodes" v-model="checkedKeys" />
-    <el-icon><promotion /></el-icon>
-    <button @click="handleClick">点击提交权限</button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { storeToRefs } from "pinia";
 import PrivTree from "/@/components/PrivTree";
 import { useAppStoreHook } from "/@/store/modules/app";
 export default defineComponent({
   components: {
     PrivTree
   },
-  setup() {
-    const checkedKeys = ref([12, 13]);
-    const handleClick = () => {
-      checkedKeys.value = [10, 11, 12, 13];
-    };
+  setup(_, { expose }) {
+    const checkedKeys = ref([]);
     const appStore = useAppStoreHook();
-    appStore.getAppPrivs();
-    return {
-      handleClick,
-      checkedKeys,
-      appStore
+    const { privCodes } = storeToRefs(appStore);
+    const getAppPrivs = () => {
+      appStore.getAppPrivs();
     };
-  },
-  computed: {
-    privCodes() {
-      return this.appStore.privCodes;
-    }
+    expose({
+      getPrivs: getAppPrivs
+    });
+    return {
+      privCodes,
+      checkedKeys
+    };
   }
 });
 </script>

@@ -1,10 +1,18 @@
 export interface NetTree {
   privId: number;
   parentPrivId: number;
-  privType?: string;
+  privType: PrivType;
   privCode: string;
   privName: string;
   children?: NetTree[];
+}
+/**
+ * 菜单类型
+ */
+export enum PrivType {
+  contents = "C",
+  menu = "M",
+  operation = "A"
 }
 
 // 系统根目录

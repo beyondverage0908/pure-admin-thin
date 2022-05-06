@@ -2,7 +2,7 @@ import { h, defineComponent, ref, resolveComponent, watch } from "vue";
 import type { ElTree } from "element-plus";
 // import type Node from "element-plus/es/components/tree/src/model/node";
 // import { dataSource } from "./data-source";
-import { NetTree } from "./util";
+import { NetTree, PrivType } from "./util";
 
 /**
  * 事件枚举
@@ -19,6 +19,33 @@ enum EmitEvent {
  */
 const setCheckedByKeys = (ref: any, keys: number[], isChecked = true) => {
   keys.forEach(key => ref!.setChecked(key, isChecked, true));
+};
+
+const renderIcon = (privType?: PrivType) => {
+  const ElIcon = resolveComponent("ElIcon");
+  const Contents = h(resolveComponent("Folder"));
+  const Menu = h(resolveComponent("Tickets"));
+  const Operate = h(resolveComponent("Pointer"));
+  const Link = h(resolveComponent("Link"));
+  if (!privType) {
+    return h(ElIcon, { style: { marginRight: "8px" } }, () => Link);
+  }
+  let icon = null;
+  switch (privType) {
+    case PrivType.contents:
+      icon = h(ElIcon, { style: { marginRight: "8px" } }, () => Contents);
+      break;
+    case PrivType.menu:
+      icon = h(ElIcon, { style: { marginRight: "8px" } }, () => Menu);
+      break;
+    case PrivType.operation:
+      icon = h(ElIcon, { style: { marginRight: "8px" } }, () => Operate);
+      break;
+    default:
+      icon = h(ElIcon, { style: { marginRight: "8px" } }, () => Link);
+      break;
+  }
+  return icon;
 };
 
 let _treeRef = null;
@@ -93,7 +120,9 @@ const PrivTree = defineComponent({
           return;
         keys.push(node.parentPrivId);
         const parentNode = treeRef!.getNode(node.parentPrivId);
-        getParentKeys(parentNode.data as NetTree);
+        if (parentNode) {
+          getParentKeys(parentNode.data as NetTree);
+        }
       }
       getParentKeys(treeNode);
       return keys;
@@ -121,10 +150,7 @@ const PrivTree = defineComponent({
       }
       emitEvent();
     };
-    const ElIcon = resolveComponent("ElIcon");
-    const Tickets = h(resolveComponent("Tickets"));
-    const Link = h(resolveComponent("Link"));
-    const renderContent = (h, { data }: { data: NetTree }) => {
+    const renderContent = (h: Function, { data }: { data: NetTree }) => {
       return h(
         "span",
         {
@@ -147,10 +173,7 @@ const PrivTree = defineComponent({
                 fontSize: "12px"
               }
             },
-            [
-              h(ElIcon, { style: { marginRight: "8px" } }, () => Tickets),
-              data.privName
-            ]
+            [renderIcon(data.privType), data.privName]
           ),
           data.privCode
             ? h(
@@ -163,10 +186,7 @@ const PrivTree = defineComponent({
                     fontSize: "12px"
                   }
                 },
-                [
-                  h(ElIcon, { style: { marginRight: "8px" } }, () => Link),
-                  data.privCode || ""
-                ]
+                [renderIcon(), data.privCode || ""]
               )
             : null
         ]
@@ -179,7 +199,9 @@ const PrivTree = defineComponent({
           backgroundColor: "#fff",
           padding: "5px 0",
           marginBottom: "8px",
-          borderBottom: "1px #eee solid"
+          borderBottom: "1px #eee solid",
+          fontSize: "14px",
+          color: "#333"
         }
       },
       [
@@ -209,7 +231,7 @@ const PrivTree = defineComponent({
     const ETree = resolveComponent("ElTree");
     const PTree = h(ETree, {
       ref: "treeRef",
-      nodeKey: "id",
+      nodeKey: "privId",
       data: this.dataSource,
       showCheckbox: true,
       defaultExpandAll: true,

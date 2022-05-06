@@ -8,7 +8,7 @@
             ><role-users ref="roleUsersRef"
           /></el-tab-pane>
           <el-tab-pane label="角色权限" :name="TabNames.rolePrivs"
-            ><privs
+            ><privs ref="privsRef"
           /></el-tab-pane>
         </el-tabs>
       </el-col>
@@ -33,14 +33,17 @@ export default defineComponent({
   setup() {
     const tabName = ref(TabNames.roleNames);
     const roleUsersRef = ref<typeof RoleUsers>(null);
+    const privsRef = ref<typeof Privs>(null);
     const handleRoleChange = (role: RoleRow) => {
       roleUsersRef.value?.getUsersData(role);
+      privsRef.value?.getPrivs();
     };
 
     return {
       tabName,
       TabNames,
       roleUsersRef,
+      privsRef,
       handleRoleChange
     };
   }

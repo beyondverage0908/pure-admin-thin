@@ -1,29 +1,41 @@
 <template>
-  <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="userName" label="用户名" />
-    <el-table-column prop="realName" label="姓名" />
-    <el-table-column prop="sysFlag" label="系统管理员">
-      <template #default="{ row }">
-        {{ row.sysFlag === SystemFlag.yes ? "是" : "否" }}
-      </template>
-    </el-table-column>
-    <el-table-column prop="phone" label="电话" />
-    <el-table-column prop="email" label="邮箱" />
-    <el-table-column label="操作">
-      <template #default="{ row }">
-        <el-button circle type="danger" @click="handleDel(row)" icon="Delete" />
-        <el-button circle type="primary" @click="handleEdit(row)" icon="Edit" />
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-pagination
-    background
-    layout="total, prev, pager, next"
-    v-model:current-page="currPage"
-    :page-size="pageSize"
-    :total="total"
-    style="margin-top: 15px; justify-content: flex-end"
-  />
+  <div style="padding: 0 0 15px 0">
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="userName" label="用户名" />
+      <el-table-column prop="realName" label="姓名" />
+      <el-table-column prop="sysFlag" label="系统管理员">
+        <template #default="{ row }">
+          {{ row.sysFlag === SystemFlag.yes ? "是" : "否" }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="phone" label="电话" />
+      <el-table-column prop="email" label="邮箱" />
+      <el-table-column label="操作">
+        <template #default="{ row }">
+          <el-button
+            circle
+            type="danger"
+            @click="handleDel(row)"
+            icon="Delete"
+          />
+          <el-button
+            circle
+            type="primary"
+            @click="handleEdit(row)"
+            icon="Edit"
+          />
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      layout="total, prev, pager, next"
+      v-model:current-page="currPage"
+      :page-size="pageSize"
+      :total="total"
+      style="margin-top: 15px; justify-content: flex-end"
+    />
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";

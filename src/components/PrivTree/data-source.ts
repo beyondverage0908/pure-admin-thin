@@ -1,8 +1,8 @@
-import { Tree } from "./index";
+import { NetTree } from "./util";
 /**
  * 数据源
  */
-export const dataSource: Tree[] = [
+export const dataSource: NetTree[] = [
   {
     id: 1,
     code: "level-one-1",
@@ -76,7 +76,7 @@ export const dataSource: Tree[] = [
 /**
  * esrm数据源
  */
-export const dataSourceEsrm = [
+export const dataSourceMenuEsrm: Array<NetTree> = [
   {
     privId: 274,
     parentPrivId: 198,
@@ -1721,5 +1721,206 @@ export const dataSourceEsrm = [
     privType: "M",
     privCode: "m-credit-batch-delete-tag",
     privName: "批量删除标签管理 (导入)"
+  }
+];
+/**
+ * 按钮权限
+ */
+export const dataSourceEsrmOperates: Array<NetTree> = [
+  {
+    privId: 271,
+    parentPrivId: 30,
+    privType: "A",
+    privCode: "m-compliance-delegate-monitor:export",
+    privName: "委托来源监控导出"
+  },
+  {
+    privId: 272,
+    parentPrivId: 33,
+    privType: "A",
+    privCode: "m-compliance-terminal-report:export",
+    privName: "终端数据报备导出"
+  },
+  {
+    privId: 273,
+    parentPrivId: 35,
+    privType: "A",
+    privCode: "m-compliance-data-collect:export",
+    privName: "监控结果汇总查询导出"
+  },
+  {
+    privId: 267,
+    parentPrivId: 25,
+    privType: "A",
+    privCode: "m-compliance-agentinfo:export",
+    privName: "经纪人基本信息导出"
+  },
+  {
+    privId: 268,
+    parentPrivId: 27,
+    privType: "A",
+    privCode: "m-compliance-kh-monitor:export",
+    privName: "员工及经纪人开户监控导出"
+  },
+  {
+    privId: 269,
+    parentPrivId: 28,
+    privType: "A",
+    privCode: "m-compliance-trade-monitor:export",
+    privName: "员工及经纪人交易监控导出"
+  },
+  {
+    privId: 270,
+    parentPrivId: 29,
+    privType: "A",
+    privCode: "m-compliance-holding-monitor:export",
+    privName: "员工及经纪人持仓监控导出"
+  },
+  {
+    privId: 266,
+    parentPrivId: 24,
+    privType: "A",
+    privCode: "m-compliance-staffinfo:export",
+    privName: "员工基本信息导出"
+  },
+  {
+    privId: 237,
+    parentPrivId: 236,
+    privType: "A",
+    privCode: "m-compliance-data-overview:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 233,
+    parentPrivId: 34,
+    privType: "A",
+    privCode: "m-compliance-his-report:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 209,
+    parentPrivId: 24,
+    privType: "A",
+    privCode: "m-compliance-staffinfo:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 210,
+    parentPrivId: 25,
+    privType: "A",
+    privCode: "m-compliance-agentinfo:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 207,
+    parentPrivId: 35,
+    privType: "A",
+    privCode: "m-compliance-data-collect:assign-flow",
+    privName: "指派流程"
+  },
+  {
+    privId: 208,
+    parentPrivId: 32,
+    privType: "A",
+    privCode: "m-compliance-wait-start:start-flow",
+    privName: "发起流程"
+  },
+  {
+    privId: 48,
+    parentPrivId: 33,
+    privType: "A",
+    privCode: "m-compliance-terminal-report:import",
+    privName: "导入"
+  },
+  {
+    privId: 36,
+    parentPrivId: 27,
+    privType: "A",
+    privCode: "m-compliance-kh-monitor:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 37,
+    parentPrivId: 28,
+    privType: "A",
+    privCode: "m-compliance-trade-monitor:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 38,
+    parentPrivId: 29,
+    privType: "A",
+    privCode: "m-compliance-holding-monitor:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 39,
+    parentPrivId: 30,
+    privType: "A",
+    privCode: "m-compliance-delegate-monitor:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 40,
+    parentPrivId: 33,
+    privType: "A",
+    privCode: "m-compliance-terminal-report:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 41,
+    parentPrivId: 33,
+    privType: "A",
+    privCode: "m-compliance-terminal-report:add",
+    privName: "新增"
+  },
+  {
+    privId: 42,
+    parentPrivId: 33,
+    privType: "A",
+    privCode: "m-compliance-terminal-report:edit",
+    privName: "修改"
+  },
+  {
+    privId: 43,
+    parentPrivId: 33,
+    privType: "A",
+    privCode: "m-compliance-terminal-report:delete",
+    privName: "删除"
+  },
+  {
+    privId: 44,
+    parentPrivId: 35,
+    privType: "A",
+    privCode: "m-compliance-data-collect:query",
+    privName: "查询全部数据权限"
+  },
+  {
+    privId: 45,
+    parentPrivId: 35,
+    privType: "A",
+    privCode: "m-compliance-data-collect:result",
+    privName: "编辑考核结果"
+  },
+  {
+    privId: 46,
+    parentPrivId: 35,
+    privType: "A",
+    privCode: "m-compliance-data-collect:abandon",
+    privName: "废弃"
+  },
+  {
+    privId: 47,
+    parentPrivId: 35,
+    privType: "A",
+    privCode: "m-compliance-data-collect:restart",
+    privName: "重新下发"
+  },
+  {
+    privId: 20,
+    parentPrivId: 7,
+    privType: "A",
+    privCode: "m-proprietary-risk-weekly:remark-edit",
+    privName: "自营风险周报:编辑按钮"
   }
 ];
