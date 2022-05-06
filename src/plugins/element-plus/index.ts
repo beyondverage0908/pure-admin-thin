@@ -46,7 +46,8 @@ import {
   ElMain,
   ElAside,
   ElForm,
-  ElFormItem
+  ElFormItem,
+  ElPagination
 } from "element-plus";
 
 // Directives
@@ -94,7 +95,8 @@ const components = [
   ElMain,
   ElAside,
   ElForm,
-  ElFormItem
+  ElFormItem,
+  ElPagination
 ];
 
 export function useElementPlus(app: App) {

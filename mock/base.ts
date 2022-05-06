@@ -4,3 +4,11 @@ export const messageBaseInfo = {
   data: {},
   success: true
 };
+
+export enum Method {
+  get = "get",
+  post = "post",
+  put = "put",
+  head = "head",
+  delete = "delete"
+}

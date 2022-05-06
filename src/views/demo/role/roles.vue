@@ -5,7 +5,14 @@
         >添加角色</el-button
       >
     </div>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table
+      ref="tableRef"
+      :data="tableData"
+      highlight-current-row
+      style="width: 100%"
+      :row-style="{ cursor: 'pointer' }"
+      @row-click="handleRowClick"
+    >
       <el-table-column prop="roleName" label="角色名称" />
       <el-table-column prop="remark" label="角色备注" />
       <el-table-column label="操作">
@@ -25,6 +32,14 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      style="margin-top: 15px; justify-content: flex-end"
+      background
+      layout="total, prev, pager, next"
+      v-model:currentPage="currPage"
+      v-model:page-size="pageSize"
+      :total="totalCount"
+    />
     <el-dialog v-model="visiable" width="40%" title="编辑">
       <el-form
         ref="ruleFormRef"
@@ -52,16 +67,16 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive } from "vue";
-import { getRoles, deleteRole, editRole, addRole } from "/@/api/app";
+import { defineComponent, ref, reactive, watch, onMounted } from "vue";
+import { getRoles, deleteRole, editRole, addRole } from "/@/api/role";
 import { ElMessageBox } from "element-plus";
-import type { FormInstance, FormRules } from "element-plus";
+import type { FormInstance, FormRules, ElTable } from "element-plus";
 
-type Row = {
+export interface RoleRow {
   roleId: number;
   roleName: string;
   remark?: string;
-};
+}
 
 enum EditMode {
   add = "1",
@@ -69,12 +84,16 @@ enum EditMode {
 }
 
 export default defineComponent({
-  setup() {
+  emits: ["on-role-change"],
+  setup(props, { emit }) {
     const tableData = ref([]);
     const totalCount = ref(0);
+    const pageSize = ref(20);
+    const currPage = ref(1);
     const visiable = ref(false);
     const ruleFormRef = ref<FormInstance>();
-    let currentEditRow: Row = null;
+    const tableRef = ref<InstanceType<typeof ElTable>>();
+    let currentEditRow: RoleRow = null;
     let editMode: EditMode = EditMode.add;
     let form = reactive({
       roleName: "",
@@ -91,13 +110,28 @@ export default defineComponent({
     });
     // 获取角色
     const getCurrentSystemRoles = async () => {
-      const data = await getRoles({ currPage: 1, pageSize: 20 });
+      const data = await getRoles({
+        currPage: currPage.value,
+        pageSize: pageSize.value
+      });
       if (data && data.success) {
         tableData.value = data.data.list;
         totalCount.value = data.data.totalCount;
       }
     };
-    getCurrentSystemRoles();
+    onMounted(async () => {
+      await getCurrentSystemRoles();
+      if (tableData.value && tableData.value.length) {
+        const firstRow: RoleRow = tableData.value[0];
+        tableRef.value!.setCurrentRow(firstRow);
+        emit("on-role-change", firstRow);
+      }
+    });
+
+    // 分页的改变建议通过监听page的变化实现数据重新获取
+    watch(currPage, () => {
+      getCurrentSystemRoles();
+    });
 
     const resetFrom = () => {
       form.roleName = "";
@@ -165,11 +199,7 @@ export default defineComponent({
       });
     };
 
-    const handleEdit = (row: {
-      roleId: number;
-      roleName: string;
-      remark?: string;
-    }) => {
+    const handleEdit = (row: RoleRow) => {
       visiable.value = true;
       currentEditRow = row;
       form.roleName = row.roleName;
@@ -177,24 +207,37 @@ export default defineComponent({
       editMode = EditMode.edit;
     };
 
+    const handleRowClick = (row: RoleRow) => {
+      emit("on-role-change", row);
+    };
+
     return {
       visiable,
       tableData,
       totalCount,
+      pageSize,
+      currPage,
       ruleFormRef: ruleFormRef,
       form,
       rules,
+      tableRef,
       handleAddRole,
       handleDel,
       handleEdit,
-      handleConfirm
+      handleConfirm,
+      handleRowClick
     };
   }
+  // mounted() {
+  //   // this.tableRef.value!.setCurrentRow();
+  //   console.log(this.tableRef);
+  // }
 });
 </script>
 <style scoped lang="scss">
 .role-list {
   background-color: #fff;
+  padding: 0 0 15px 0;
 
   .header {
     padding: 10px 0 0 10px;

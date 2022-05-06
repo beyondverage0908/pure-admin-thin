@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { getConfig } from "/@/config";
 import { storageLocal } from "/@/utils/storage";
 import { deviceDetection } from "/@/utils/deviceDetection";
-import { getPrivs } from "/@/api/app";
+import { getPrivs } from "/@/api/role";
 import { recursiveConstructTreeData } from "/@/components/PrivTree/util";
 
 export const useAppStore = defineStore({

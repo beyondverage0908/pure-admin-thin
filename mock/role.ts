@@ -1,16 +1,9 @@
-import { messageBaseInfo } from "./base";
+import { messageBaseInfo, Method } from "./base";
 import { MockMethod } from "vite-plugin-mock";
 import { dataSourceEsrm } from "/@/components/PrivTree/data-source";
 
-enum Method {
-  get = "get",
-  post = "post",
-  put = "put",
-  head = "head"
-}
-
 type MockType = {
-  url: string;
+  url: string | RegExp;
   method: Method;
   response: (request: object) => object;
 };
@@ -33,7 +26,7 @@ const getRoles = () => ({
     return {
       ...messageBaseInfo,
       data: {
-        totalCount: 1,
+        totalCount: 3,
         pageSize: 20,
         totalPage: 1,
         currPage: 1,
@@ -44,6 +37,20 @@ const getRoles = () => ({
             roleType: "A",
             remark: "全局管理员",
             sysFlag: "1"
+          },
+          {
+            roleId: 8,
+            roleName: "片区管理员",
+            roleType: "A",
+            remark: "片区管理员",
+            sysFlag: "1"
+          },
+          {
+            roleId: 7,
+            roleName: "合规管理员",
+            roleType: "A",
+            remark: "合规管理员",
+            sysFlag: "0"
           }
         ]
       }
@@ -82,10 +89,47 @@ const addRole = (): MockType => ({
   }
 });
 
+const getRoleUsers = (): MockType => ({
+  url: /\/p2hmgr\/api\/roles\/\d\/users/,
+  method: Method.get,
+  response: () => {
+    return {
+      ...messageBaseInfo,
+      data: {
+        totalCount: 2,
+        pageSize: 20,
+        totalPage: 1,
+        currPage: 1,
+        list: [
+          {
+            userId: 4,
+            userName: "admin",
+            realName: null,
+            phone: null,
+            email: null,
+            state: 1,
+            sysFlag: "0"
+          },
+          {
+            userId: 6,
+            userName: "test",
+            realName: "zjw",
+            phone: "",
+            email: "",
+            state: 1,
+            sysFlag: "0"
+          }
+        ]
+      }
+    };
+  }
+});
+
 export default [
   getPrivs(),
   getRoles(),
   deleteRole(),
   editRole(),
-  addRole()
+  addRole(),
+  getRoleUsers()
 ] as MockMethod[];
