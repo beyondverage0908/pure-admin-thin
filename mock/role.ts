@@ -1,6 +1,9 @@
 import { messageBaseInfo, Method, MockType } from "./base";
 import { MockMethod } from "vite-plugin-mock";
-import { dataSourceEsrm } from "/@/components/PrivTree/data-source";
+import {
+  dataSourceMenuEsrm,
+  dataSourceEsrmOperates
+} from "/@/components/PrivTree/data-source";
 
 const getPrivs = () => ({
   url: "/p2hmgr/api/privs",
@@ -8,7 +11,18 @@ const getPrivs = () => ({
   response: () => {
     return {
       ...messageBaseInfo,
-      data: dataSourceEsrm
+      data: dataSourceMenuEsrm
+    };
+  }
+});
+
+const getOperatePrivs = (): MockType => ({
+  url: "/p2hmgr/api/operate",
+  method: Method.get,
+  response: () => {
+    return {
+      ...messageBaseInfo,
+      data: dataSourceEsrmOperates
     };
   }
 });
@@ -119,6 +133,7 @@ const getRoleUsers = (): MockType => ({
 
 export default [
   getPrivs(),
+  getOperatePrivs(),
   getRoles(),
   deleteRole(),
   editRole(),
