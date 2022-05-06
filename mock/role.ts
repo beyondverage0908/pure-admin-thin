@@ -1,12 +1,6 @@
-import { messageBaseInfo, Method } from "./base";
+import { messageBaseInfo, Method, MockType } from "./base";
 import { MockMethod } from "vite-plugin-mock";
 import { dataSourceEsrm } from "/@/components/PrivTree/data-source";
-
-type MockType = {
-  url: string | RegExp;
-  method: Method;
-  response: (request: object) => object;
-};
 
 const getPrivs = () => ({
   url: "/p2hmgr/api/privs",
@@ -92,7 +86,24 @@ const addRole = (): MockType => ({
 const getRoleUsers = (): MockType => ({
   url: /\/p2hmgr\/api\/roles\/\d\/users/,
   method: Method.get,
-  response: () => {
+  response: ({ url }) => {
+    const paths = url.split("/");
+    const roleId = Number(paths[4]);
+    const item = {
+      userId: 4,
+      userName: "admin",
+      realName: "李白",
+      phone: "18516133629",
+      email: "zjj@163.com",
+      state: 1,
+      sysFlag: "0"
+    };
+    const list = Array.from({ length: roleId }, (_, i) => ({
+      ...item,
+      userId: i,
+      userName: item.userName + i,
+      realName: item.realName + i
+    }));
     return {
       ...messageBaseInfo,
       data: {
@@ -100,26 +111,7 @@ const getRoleUsers = (): MockType => ({
         pageSize: 20,
         totalPage: 1,
         currPage: 1,
-        list: [
-          {
-            userId: 4,
-            userName: "admin",
-            realName: null,
-            phone: null,
-            email: null,
-            state: 1,
-            sysFlag: "0"
-          },
-          {
-            userId: 6,
-            userName: "test",
-            realName: "zjw",
-            phone: "",
-            email: "",
-            state: 1,
-            sysFlag: "0"
-          }
-        ]
+        list: list
       }
     };
   }

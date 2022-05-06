@@ -12,3 +12,16 @@ export enum Method {
   head = "head",
   delete = "delete"
 }
+
+interface Context {
+  url: string;
+  query?: any;
+  body?: any;
+  headers?: any;
+}
+
+export type MockType = {
+  url: string | RegExp;
+  method: Method;
+  response: (context: Context) => object;
+};

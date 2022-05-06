@@ -58,7 +58,6 @@ export default defineComponent({
       }
     };
     const getUsersData = (role?: RoleRow) => {
-      console.log("-------------", role);
       getRoleUsersList(role.roleId);
     };
     watch(currPage, () => {
