@@ -35,7 +35,7 @@ export default defineComponent({
     const roleUsersRef = ref<typeof RoleUsers>(null);
     const privsRef = ref<typeof Privs>(null);
     const handleRoleChange = (role: RoleRow) => {
-      roleUsersRef.value?.getUsersData(role);
+      roleUsersRef.value?.getRoleUsersData(role);
       privsRef.value?.getPrivs();
     };
 

@@ -130,6 +130,55 @@ const getRoleUsers = (): MockType => ({
     };
   }
 });
+/**
+ * 获取可添加角色用户的列表
+ * @returns
+ */
+const getAppendRoleUsers = (): MockType => ({
+  url: /\/p2hmgr\/api\/roles\/\d\/users/,
+  method: Method.get,
+  response: () => {
+    return {
+      ...messageBaseInfo,
+      data: {
+        totalCount: 1,
+        pageSize: 20,
+        totalPage: 1,
+        currPage: 1,
+        list: [
+          {
+            userId: 6,
+            userName: "test",
+            realName: "zjw",
+            phone: "",
+            email: "",
+            state: 1,
+            sysFlag: "0"
+          },
+          {
+            userId: 6,
+            userName: "liwei",
+            realName: "李伟",
+            phone: "18546936958",
+            email: "jc@gmail.com",
+            state: 1,
+            sysFlag: "0"
+          }
+        ]
+      }
+    };
+  }
+});
+// 提交角色id列表
+export const appendRoleUsers = (): MockType => ({
+  url: /\/p2hmgr\/api\/roles\/\d\/users/,
+  method: Method.post,
+  response: () => {
+    return {
+      ...messageBaseInfo
+    };
+  }
+});
 
 export default [
   getPrivs(),
@@ -138,5 +187,7 @@ export default [
   deleteRole(),
   editRole(),
   addRole(),
-  getRoleUsers()
+  getRoleUsers(),
+  getAppendRoleUsers(),
+  appendRoleUsers()
 ] as MockMethod[];

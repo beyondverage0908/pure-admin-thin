@@ -62,3 +62,27 @@ export const getRoleUsers = (
 ): HttpResponseType => {
   return http.request("get", `/roles/${roleId}/users`, { params });
 };
+/**
+ * 获取可添加的角色列表
+ * @param roleId
+ * @param params
+ * @returns
+ */
+export const getAppendRoleUsers = (
+  roleId: number,
+  params: object
+): HttpResponseType => {
+  return http.request("get", `/roles/${roleId}/users`, { params });
+};
+/**
+ * 提交角色用户列表
+ * @param roleId
+ * @param userIds
+ * @returns
+ */
+export const appendRoleUsers = (
+  roleId: number,
+  userIds: Array<number>
+): HttpResponseType => {
+  return http.request("post", `/roles/${roleId}/users`, { data: userIds });
+};

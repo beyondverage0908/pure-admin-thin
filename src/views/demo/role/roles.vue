@@ -85,7 +85,7 @@ enum EditMode {
 
 export default defineComponent({
   emits: ["on-role-change"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const tableData = ref([]);
     const totalCount = ref(0);
     const pageSize = ref(20);

@@ -1,5 +1,8 @@
 <template>
   <div style="padding: 0 0 15px 0">
+    <el-button type="primary" icon="plus" @click="handleAddUsers"
+      >添加用户</el-button
+    >
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="userName" label="用户名" />
       <el-table-column prop="realName" label="姓名" />
@@ -35,12 +38,17 @@
       :total="total"
       style="margin-top: 15px; justify-content: flex-end"
     />
+    <modal-role-users
+      ref="modalRoleUsersRef"
+      @on-success="handleAddUsersSucess"
+    />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 import { RoleRow } from "./roles.vue";
 import { getRoleUsers } from "/@/api/role";
+import ModalRoleUsers from "./components/modal-role-users.vue";
 
 enum SystemFlag {
   yes = "1",
@@ -48,16 +56,24 @@ enum SystemFlag {
 }
 
 export default defineComponent({
+  components: {
+    ModalRoleUsers
+  },
   setup(_, { expose }) {
     const tableData = ref([]);
     const currPage = ref(1);
     const pageSize = 20;
     const total = ref(0);
+    let _roleId = null;
+    const modalRoleUsersRef = ref<InstanceType<typeof ModalRoleUsers>>(null);
     const handleDel = (row: object) => {
       console.log(row);
     };
     const handleEdit = (row: object) => {
       console.log(row);
+    };
+    const handleAddUsers = () => {
+      modalRoleUsersRef.value?.show(_roleId);
     };
     const getRoleUsersList = async (roleId: number) => {
       const data = await getRoleUsers(roleId, {
@@ -69,14 +85,18 @@ export default defineComponent({
         total.value = data.data.totalCount;
       }
     };
-    const getUsersData = (role?: RoleRow) => {
+    const handleAddUsersSucess = () => {
+      getRoleUsersList(_roleId);
+    };
+    const getUsersData = (role: RoleRow) => {
+      _roleId = role.roleId;
       getRoleUsersList(role.roleId);
     };
     watch(currPage, () => {
-      getUsersData();
+      getRoleUsersList(_roleId);
     });
     expose({
-      getUsersData: getUsersData
+      getRoleUsersData: getUsersData
     });
     return {
       tableData,
@@ -84,8 +104,11 @@ export default defineComponent({
       currPage,
       pageSize,
       total,
+      modalRoleUsersRef,
       handleDel,
-      handleEdit
+      handleEdit,
+      handleAddUsers,
+      handleAddUsersSucess
     };
   }
 });
