@@ -5,9 +5,10 @@
       :data="tableData"
       stripe
       :row-class-name="tableRowClassName"
+      :total="tableTotalCount"
       @selection-change="handleSelectionChange"
       @cell-click="handleCleckCell"
-      @on-xxx="handleXXX"
+      @page-change="handlePageChange"
     >
       <el-table-column type="selection" width="55" />
       <el-table-column fixed label="姓名" prop="name">
@@ -44,29 +45,17 @@ interface User {
   address: string;
 }
 
-const tableData = reactive<User[]>([
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles"
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles"
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom3",
-    address: "No. 189, Grove St, Los Angeles"
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom2",
-    address: "No. 189, Grove St, Los Angeles"
-  }
-]);
+const tableData = reactive<User[]>(
+  Array.from({ length: 123 }, (_, i) => {
+    return {
+      date: "2016-05-03",
+      name: `Tom${i}`,
+      address: "No. 189, Grove St, Los Angeles"
+    };
+  })
+);
 const multipleSelection = ref<User[]>([]);
+const tableTotalCount = ref<number>(tableData.length);
 
 const handleEdit = () => {
   ElMessageBox.alert("edit", "title");
@@ -93,8 +82,8 @@ const handleSelectionRow12 = () => {
 const handleCleckCell = () => {
   console.log("cell be click!!");
 };
-const handleXXX = v => {
-  console.log("xxxx -- ", v);
+const handlePageChange = v => {
+  console.log("page change -- ", v);
 };
 </script>
 <style>

@@ -1,8 +1,7 @@
-import { defineComponent, h, getCurrentInstance } from "vue";
+import { defineComponent, h, getCurrentInstance, toRefs, ref } from "vue";
 import { ElTable, ElPagination } from "element-plus";
-// import type { ElTable as ElTableType } from "element-plus";
-// import { dataSource } from "./mock-data";
 
+// 定义暴露给组件外部方法的定义
 export type EMTablePublicInstance = {
   getTableInstance: () => InstanceType<typeof ElTable>;
 };
@@ -10,33 +9,35 @@ export type EMTablePublicInstance = {
 const INNER_TABLE_REF = "innerTableRef";
 
 const EMTable = defineComponent({
-  emits: ["current-change"],
-  setup(_, { expose }) {
-    // const slots = ctx.slots;
-    // console.log(props, slots);
-    // const instance = getCurrentInstance().slots;
-    // return () => h(ElTable, {}, instance.default);
-
-    // const innerTableRef = ref<InstanceType<typeof ElTable>>(null);
-
+  props: {
+    total: {
+      type: Number,
+      default: () => 0
+    }
+  },
+  emits: ["page-change"],
+  setup(props, { expose, emit }) {
+    const { total } = toRefs(props);
+    const currentPage = ref<number>(1);
+    const pageSize = ref<number>(20);
     const currInstance = getCurrentInstance();
 
+    // 获取table的实例方法
     const tableInstance = () => {
       const tableInstance = currInstance.refs[INNER_TABLE_REF] as InstanceType<
         typeof ElTable
       >;
       return tableInstance;
     };
-
     const publicInstance: EMTablePublicInstance = {
       getTableInstance: tableInstance
     };
-
+    // 组件实例暴露的方法列表
     expose(publicInstance);
 
     return instance => {
       // console.log(instance);
-      console.log(instance, instance.$slots.bug());
+      // console.log(instance, instance.$slots.bug());
       const ToolBar = h("div", {}, "这是个toolbar");
       const Main = h(
         ElTable,
@@ -49,16 +50,30 @@ const EMTable = defineComponent({
       const Pagination = h(ElPagination, {
         background: true,
         layout: "total, sizes, prev, pager, next",
-        total: 231,
-        // currentPage: 1,
-        pageSize: 20,
+        total: total.value,
+        currentPage: currentPage.value,
+        pageSize: pageSize.value,
+        pageSizes: [20, 40, 50, 100],
+        defaultPageSize: 20,
+        pagerCount: 5,
         style: {
           display: "flex",
           "justify-content": "flex-end",
           "margin-top": "15px"
         },
-        on: {
-          "update:page-size": () => {}
+        onCurrentChange: v => {
+          currentPage.value = v;
+          emit("page-change", {
+            pageSize: pageSize.value,
+            page: currentPage.value
+          });
+        },
+        onSizeChange: v => {
+          pageSize.value = v;
+          emit("page-change", {
+            pageSize: pageSize.value,
+            page: currentPage.value
+          });
         }
       });
       const FooterBar = h("div", {}, Pagination);
