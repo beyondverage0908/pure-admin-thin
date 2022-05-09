@@ -27,7 +27,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { ref, watch, defineEmits } from "vue";
+import { ref, watch } from "vue";
 import { getAppendRoleUsers, appendRoleUsers } from "/@/api/role";
 
 interface UserRow {
@@ -37,6 +37,9 @@ interface UserRow {
   phone?: string;
   email?: string;
 }
+interface Emits {
+  (e: "on-success"): void;
+}
 
 const visiable = ref(false);
 const tableData = ref<UserRow[]>([]);
@@ -45,7 +48,7 @@ const currPage = ref(1);
 const total = ref(0);
 const selectionUserIds = ref<number[]>([]);
 let _roleId: number = null;
-const emit = defineEmits(["on-success"]);
+const emit = defineEmits<Emits>();
 
 const show = (roleId: number) => {
   visiable.value = true;

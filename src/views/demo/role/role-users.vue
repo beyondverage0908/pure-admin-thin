@@ -38,10 +38,7 @@
       :total="total"
       style="margin-top: 15px; justify-content: flex-end"
     />
-    <modal-role-users
-      ref="modalRoleUsersRef"
-      @on-success="handleAddUsersSucess"
-    />
+    <modal-role-users ref="modalRoleUsersRef" />
   </div>
 </template>
 <script lang="ts">

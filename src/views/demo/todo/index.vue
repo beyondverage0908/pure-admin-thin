@@ -4,6 +4,7 @@
       ref="multipleTableRef"
       :data="tableData"
       style="width: 100%"
+      stripe
       @selection-change="handleSelectionChange"
       @cell-click="handleCleckCell"
     >

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <EMTable
+    <em-table
       ref="emTableRef"
       :data="tableData"
       stripe
@@ -10,11 +10,23 @@
       @cell-click="handleCleckCell"
       @page-change="handlePageChange"
     >
+      <template #toolbarLeft>
+        <el-button type="primary" @click="handleRefreshTable"
+          >刷新列表1</el-button
+        >
+        <el-button type="primary" @click="handleRefreshTable"
+          >刷新列表2</el-button
+        >
+      </template>
+      <template #toolbarRight>
+        <el-button type="warning">导出按钮1</el-button>
+        <el-button type="success">导出按钮2</el-button>
+      </template>
       <el-table-column type="selection" width="55" />
       <el-table-column fixed label="姓名" prop="name">
-        <template #default="{ row }">{{ row.name }}</template>
+        <template #default="{ row }">{{ row.name + "-林" }}</template>
       </el-table-column>
-      <el-table-column label="日期" prop="date" />
+      <el-table-column label="日期" key="date1" prop="date" />
       <el-table-column label="地址" prop="address" />
       <el-table-column label="地址" prop="address" />
       <el-table-column label="操作">
@@ -24,20 +36,17 @@
           >
         </template>
       </el-table-column>
-      <template #bug>
-        <b>33333</b>
-      </template>
-    </EMTable>
+    </em-table>
     <el-button @click="handleSelectionRow12">选中1，2行</el-button>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ElMessageBox } from "element-plus";
-import EMTable, { EMTablePublicInstance } from "/@/components/EMTable";
-import { ComponentPublicInstance, reactive, ref } from "vue";
+import EmTable, { EmTablePublicInstance } from "/@/components/EMTable";
+import { ComponentPublicInstance, ref } from "vue";
 
-const emTableRef = ref<ComponentPublicInstance<EMTablePublicInstance>>(null);
+const emTableRef = ref<ComponentPublicInstance<EmTablePublicInstance>>(null);
 
 interface User {
   date: string;
@@ -45,8 +54,8 @@ interface User {
   address: string;
 }
 
-const tableData = reactive<User[]>(
-  Array.from({ length: 123 }, (_, i) => {
+const tableData = ref<User[]>(
+  Array.from({ length: 10 }, (_, i) => {
     return {
       date: "2016-05-03",
       name: `Tom${i}`,
@@ -55,7 +64,7 @@ const tableData = reactive<User[]>(
   })
 );
 const multipleSelection = ref<User[]>([]);
-const tableTotalCount = ref<number>(tableData.length);
+const tableTotalCount = ref<number>(tableData.value.length);
 
 const handleEdit = () => {
   ElMessageBox.alert("edit", "title");
@@ -85,6 +94,15 @@ const handleCleckCell = () => {
 const handlePageChange = v => {
   console.log("page change -- ", v);
 };
+function handleRefreshTable() {
+  const num = Date.now() % 50;
+  tableData.value = Array.from({ length: num }, (_, index) => ({
+    date: "2016-05-03",
+    name: `Tom${index}`,
+    address: "No. 189, Grove St, Los Angeles"
+  }));
+  tableTotalCount.value = num;
+}
 </script>
 <style>
 .el-table .warning-row {
