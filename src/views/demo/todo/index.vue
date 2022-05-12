@@ -1,5 +1,11 @@
 <template>
   <div>
+    <el-row type="flex" justify="end" style="margin-bottom: 8px">
+      <em-columns-filter
+        :columns="columns"
+        @on-columns-filter="handleColumnsFilter"
+      />
+    </el-row>
     <el-table
       ref="multipleTableRef"
       :data="tableData"
@@ -8,14 +14,12 @@
       @selection-change="handleSelectionChange"
       @cell-click="handleCleckCell"
     >
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="Date" width="120">
-        <template #default="scope">{{ scope.row.date }}</template>
-      </el-table-column>
-      <el-table-column property="name" label="Name" width="120" />
+      <el-table-column type="selection" />
       <el-table-column
-        property="address"
-        label="Address"
+        v-for="item in columns"
+        :key="item.label"
+        :prop="item.prop"
+        :label="item.label"
         show-overflow-tooltip
       />
     </el-table>
@@ -31,6 +35,13 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import type { ElTable } from "element-plus";
+import EmColumnsFilter from "/@/components/EMColumnsFilter";
+
+interface Column {
+  label: string;
+  prop: string;
+  show?: boolean;
+}
 
 interface User {
   date: string;
@@ -58,41 +69,52 @@ const handleSelectionChange = (val: User[]) => {
 
 const handleCleckCell = () => {};
 
+const columns = ref<Array<Column>>([
+  { label: "Date", prop: "date", show: true },
+  { label: "Name", prop: "name" },
+  { label: "Address", prop: "address", show: false },
+  { label: "籍贯", prop: "jiguan" }
+]);
 const tableData: User[] = [
   {
     date: "2016-05-03",
-    name: "Tom",
+    name: "Tom1",
     address: "No. 189, Grove St, Los Angeles"
   },
   {
     date: "2016-05-02",
-    name: "Tom",
+    name: "Tom2",
     address: "No. 189, Grove St, Los Angeles"
   },
   {
     date: "2016-05-04",
-    name: "Tom",
+    name: "Tom3",
     address: "No. 189, Grove St, Los Angeles"
   },
   {
     date: "2016-05-01",
-    name: "Tom",
+    name: "Tom4",
     address: "No. 189, Grove St, Los Angeles"
   },
   {
     date: "2016-05-08",
-    name: "Tom",
+    name: "Tom5",
     address: "No. 189, Grove St, Los Angeles"
   },
   {
     date: "2016-05-06",
-    name: "Tom",
+    name: "Tom6",
     address: "No. 189, Grove St, Los Angeles"
   },
   {
     date: "2016-05-07",
-    name: "Tom",
+    name: "Tom7",
     address: "No. 189, Grove St, Los Angeles"
   }
 ];
+
+const handleColumnsFilter = (filterColumns: Column[]) => {
+  console.log(filterColumns);
+  columns.value = filterColumns.filter(item => item.show);
+};
 </script>

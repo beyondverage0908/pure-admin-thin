@@ -47,7 +47,10 @@ import {
   ElAside,
   ElForm,
   ElFormItem,
-  ElPagination
+  ElPagination,
+  ElCheckboxGroup,
+  ElCheckbox,
+  ElCheckboxButton
 } from "element-plus";
 
 // Directives
@@ -96,7 +99,10 @@ const components = [
   ElAside,
   ElForm,
   ElFormItem,
-  ElPagination
+  ElPagination,
+  ElCheckboxGroup,
+  ElCheckbox,
+  ElCheckboxButton
 ];
 
 export function useElementPlus(app: App) {

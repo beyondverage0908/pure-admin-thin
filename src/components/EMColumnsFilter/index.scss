@@ -1,0 +1,28 @@
+.em-columns-filter-container {
+  display: inline-flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-end;
+  .em-columns-filter-checkbox {
+    position: absolute;
+    z-index: 10000000000000000;
+    background-color: #fff;
+    max-height: 300px;
+    min-width: 120px;
+    border: solid 1px #ddd;
+    padding: 10px 10px;
+    overflow-y: auto;
+    top: 35px;
+  }
+}
+.em-columns-filter-button {
+  padding: 5px 8px;
+  border: solid 1px #ddd;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 60px;
+  &:hover {
+    background-color: rgb(227, 227, 227);
+  }
+}
