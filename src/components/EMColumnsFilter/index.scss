@@ -3,6 +3,7 @@
   position: relative;
   flex-direction: column;
   align-items: flex-end;
+  vertical-align: middle;
   .em-columns-filter-checkbox {
     position: absolute;
     z-index: 10000000000000000;
@@ -16,7 +17,8 @@
   }
 }
 .em-columns-filter-button {
-  padding: 5px 8px;
+  // padding: 8px 15px;
+  height: 32px;
   border: solid 1px #ddd;
   display: inline-flex;
   align-items: center;
@@ -25,4 +27,18 @@
   &:hover {
     background-color: rgb(227, 227, 227);
   }
+}
+
+.em-cols-filter-defualt {
+  height: 32px;
+}
+
+.em-cols-filter-small {
+  height: 24px;
+}
+
+.em-cols-filter-large {
+  height: 40px;
+  width: 70px;
+  justify-content: space-evenly;
 }

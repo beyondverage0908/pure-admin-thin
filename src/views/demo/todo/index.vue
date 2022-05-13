@@ -3,32 +3,35 @@
     <el-row type="flex" justify="end" style="margin-bottom: 8px">
       <em-columns-filter
         :columns="columns"
-        @on-columns-filter="handleColumnsFilter"
+        @columns-filter="handleColumnsFilter"
       />
     </el-row>
-    <el-table
-      ref="multipleTableRef"
-      :data="tableData"
-      style="width: 100%"
-      stripe
-      @selection-change="handleSelectionChange"
-      @cell-click="handleCleckCell"
-    >
-      <el-table-column type="selection" />
-      <el-table-column
-        v-for="item in columns"
-        :key="item.label"
-        :prop="item.prop"
-        :label="item.label"
-        show-overflow-tooltip
-      />
-    </el-table>
-    <div style="margin-top: 20px">
-      <el-button @click="toggleSelection([tableData[1], tableData[2]])"
-        >Toggle selection status of second and third rows</el-button
+    <dynamic-height v-slot="{ height }">
+      <el-table
+        ref="multipleTableRef"
+        :height="height"
+        :data="tableData"
+        style="width: 100%"
+        stripe
+        @selection-change="handleSelectionChange"
+        @cell-click="handleCleckCell"
       >
-      <el-button @click="toggleSelection()">Clear selection</el-button>
-    </div>
+        <el-table-column type="selection" />
+        <el-table-column
+          v-for="item in columns"
+          :key="item.label"
+          :prop="item.prop"
+          :label="item.label"
+          show-overflow-tooltip
+        />
+      </el-table>
+      <div style="margin-top: 20px">
+        <el-button @click="toggleSelection([tableData[1], tableData[2]])"
+          >Toggle selection status of second and third rows</el-button
+        >
+        <el-button @click="toggleSelection()">Clear selection</el-button>
+      </div>
+    </dynamic-height>
   </div>
 </template>
 
@@ -36,6 +39,7 @@
 import { ref } from "vue";
 import type { ElTable } from "element-plus";
 import EmColumnsFilter from "/@/components/EMColumnsFilter";
+import DynamicHeight from "/@/components/DynamicHeight";
 
 interface Column {
   label: string;

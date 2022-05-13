@@ -7,18 +7,19 @@ interface EmColumnsFilterInstace {
 }
 
 enum Position {
-  left = "left",
-  right = "right"
+  start = "start",
+  end = "end"
 }
 
 type Column = {
   label: string;
-  prop: string;
+  prop?: string;
   show?: boolean;
 };
 
 interface Props {
   columns: Array<Column>;
+  size: string;
 }
 
 // interface Emits {
@@ -36,7 +37,9 @@ function getRefectComumns(columns: Array<Column>) {
       }
       return { ...item, show: true };
     });
-  return columns.map(item => ({ ...item, show: true }));
+  return columns
+    .map(item => ({ ...item, show: true }))
+    .filter(item => !!item.label);
 }
 
 const EmColumnsFilter = defineComponent({
@@ -57,15 +60,22 @@ const EmColumnsFilter = defineComponent({
     },
     position: {
       type: String,
-      default: () => Position.right,
+      default: () => Position.end,
       validator: (v: Position) => {
-        return [Position.left, Position.right].indexOf(v) > -1;
+        return [Position.end, Position.end].indexOf(v) > -1;
+      }
+    },
+    size: {
+      type: String as PropType<Props["size"]>,
+      default: () => "default",
+      validator: (v: string) => {
+        return ["small", "default", "large"].indexOf(v) > -1;
       }
     }
   },
-  emits: ["on-columns-filter"],
+  emits: ["columns-filter"],
   setup(props, { expose, emit }) {
-    const { columns } = toRefs(props);
+    const { columns, position, size } = toRefs(props);
     const checkColumns = ref(getRefectComumns(unref(columns)));
 
     const updateColumns = (columns: Props["columns"]) => {
@@ -74,6 +84,7 @@ const EmColumnsFilter = defineComponent({
     const publicMethods: EmColumnsFilterInstace = {
       updateColumns
     };
+    // 暴露出给外部的方法对象
     expose(publicMethods);
 
     const target = ref(null);
@@ -82,22 +93,29 @@ const EmColumnsFilter = defineComponent({
     });
 
     const isShowCheckBox = ref<boolean>(false);
-
     const handleClick = () => {
       isShowCheckBox.value = !isShowCheckBox.value;
     };
 
     const handleCheckboxChange = (isCheck: boolean, item: Column) => {
       item.show = isCheck;
-      emit("on-columns-filter", checkColumns.value);
+      emit("columns-filter", checkColumns.value);
     };
     // 载入的时候默认触发一次filter
     onMounted(() => {
-      emit("on-columns-filter", checkColumns.value);
+      emit("columns-filter", checkColumns.value);
     });
 
     const Button = () => (
-      <button class="em-columns-filter-button" onClick={handleClick}>
+      <button
+        class={{
+          "em-columns-filter-button": true,
+          "em-cols-filter-small": size.value === "small",
+          "em-cols-filter-defualt": size.value === "default",
+          "em-cols-filter-large": size.value === "large"
+        }}
+        onClick={handleClick}
+      >
         <el-icon color="#999">
           <grid />
         </el-icon>
@@ -122,7 +140,14 @@ const EmColumnsFilter = defineComponent({
     );
 
     const Container = () => (
-      <div class="em-columns-filter-container" ref={target}>
+      <div
+        class="em-columns-filter-container"
+        style={{
+          "align-items":
+            position.value === Position.start ? "flex-start" : "flex-end"
+        }}
+        ref={target}
+      >
         <Button></Button>
         {isShowCheckBox.value ? <CheckBox /> : null}
       </div>

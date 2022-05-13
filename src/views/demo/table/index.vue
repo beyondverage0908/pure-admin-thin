@@ -1,51 +1,59 @@
 <template>
   <div>
-    <em-table
-      ref="emTableRef"
-      :data="tableData"
-      stripe
-      :row-class-name="tableRowClassName"
-      :total="tableTotalCount"
-      @selection-change="handleSelectionChange"
-      @cell-click="handleCleckCell"
-      @page-change="handlePageChange"
-    >
-      <template #toolbarLeft>
-        <el-button type="primary" @click="handleRefreshTable"
-          >刷新列表1</el-button
-        >
-        <el-button type="primary" @click="handleRefreshTable"
-          >刷新列表2</el-button
-        >
-      </template>
-      <template #toolbarRight>
-        <el-button type="warning">导出按钮1</el-button>
-        <el-button type="success">导出按钮2</el-button>
-      </template>
-      <el-table-column type="selection" width="55" />
-      <el-table-column fixed label="姓名" prop="name">
-        <template #default="{ row }">{{ row.name + "-林" }}</template>
-      </el-table-column>
-      <el-table-column label="日期" key="date1" prop="date" />
-      <el-table-column label="地址" prop="address" />
-      <el-table-column label="地址" prop="address" />
-      <el-table-column label="操作">
-        <template #default>
-          <el-button a type="text" size="small" @click="handleEdit"
-            >编辑</el-button
+    <dynamic-height v-slot="{ height }">
+      {{ height }}
+      <em-table
+        :height="height"
+        ref="emTableRef"
+        :data="tableData"
+        stripe
+        :row-class-name="tableRowClassName"
+        :total="tableTotalCount"
+        :show-page="true"
+        v-model:pageSize="pageSize"
+        :columns-filter-size="'default'"
+        @selection-change="handleSelectionChange"
+        @cell-click="handleCleckCell"
+        @page-change="handlePageChange"
+      >
+        <template #toolbarLeft>
+          <el-button type="primary" @click="handleRefreshTable"
+            >刷新列表1</el-button
+          >
+          <el-button type="primary" @click="handleRefreshTable"
+            >刷新列表2</el-button
           >
         </template>
-      </el-table-column>
-    </em-table>
-    <el-button @click="handleSelectionRow12">选中1，2行</el-button>
+        <template #toolbarRight>
+          <el-button type="warning" size="large">导出按钮1</el-button>
+          <el-button type="success">导出按钮2</el-button>
+        </template>
+        <el-table-column type="selection" width="55" />
+        <el-table-column fixed label="姓名" prop="name">
+          <template #default="{ row }">{{ row.name + "-林" }}</template>
+        </el-table-column>
+        <el-table-column label="日期" key="date1" prop="date" />
+        <el-table-column label="地址" prop="address" />
+        <el-table-column label="地址1" prop="address" />
+        <el-table-column label="操作">
+          <template #default>
+            <el-button a type="text" size="small" @click="handleEdit"
+              >编辑</el-button
+            >
+          </template>
+        </el-table-column>
+      </em-table>
+      <el-button @click="handleSelectionRow12">选中1，2行</el-button>
+    </dynamic-height>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ElMessageBox } from "element-plus";
 import EmTable, { EmTablePublicInstance } from "/@/components/EMTable";
-import { ComponentPublicInstance, ref } from "vue";
-
+import DynamicHeight from "/@/components/DynamicHeight/index.vue";
+import { ComponentPublicInstance, ref, watch } from "vue";
+const pageSize = ref(40);
 const emTableRef = ref<ComponentPublicInstance<EmTablePublicInstance>>(null);
 
 interface User {
@@ -53,6 +61,10 @@ interface User {
   name: string;
   address: string;
 }
+
+watch(pageSize, n => {
+  console.log("watch ---------->> ", n);
+});
 
 const tableData = ref<User[]>(
   Array.from({ length: 10 }, (_, i) => {
