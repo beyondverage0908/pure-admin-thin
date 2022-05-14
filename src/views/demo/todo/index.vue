@@ -118,7 +118,6 @@ const tableData: User[] = [
 ];
 
 const handleColumnsFilter = (filterColumns: Column[]) => {
-  console.log(filterColumns);
   columns.value = filterColumns.filter(item => item.show);
 };
 </script>

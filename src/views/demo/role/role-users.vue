@@ -43,9 +43,9 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
-import { RoleRow } from "./roles.vue";
 import { getRoleUsers } from "/@/api/role";
 import ModalRoleUsers from "./components/modal-role-users.vue";
+import { RoleRow } from "./type";
 
 enum SystemFlag {
   yes = "1",

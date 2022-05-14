@@ -18,8 +18,10 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import Privs from "./privs.vue";
-import Roles, { RoleRow } from "./roles.vue";
+import Roles from "./roles.vue";
 import RoleUsers from "./role-users.vue";
+import { RoleRow } from "./type";
+
 enum TabNames {
   roleNames = "1",
   rolePrivs = "2"
@@ -34,9 +36,10 @@ export default defineComponent({
     const tabName = ref(TabNames.roleNames);
     const roleUsersRef = ref<typeof RoleUsers>(null);
     const privsRef = ref<typeof Privs>(null);
+    // 角色变更
     const handleRoleChange = (role: RoleRow) => {
       roleUsersRef.value?.getRoleUsersData(role);
-      privsRef.value?.getPrivs();
+      privsRef.value?.getPrivs(role);
     };
 
     return {

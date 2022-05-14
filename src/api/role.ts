@@ -4,6 +4,17 @@ import { http } from "../utils/http";
 export const getPrivs = (): HttpResponseType => {
   return http.request("get", "/privs");
 };
+// 添加角色
+export const addPrivs = (
+  roleId: string | number,
+  privs: number[]
+): HttpResponseType => {
+  return http.request("post", `/roles/${roleId}/privs`, { data: privs });
+};
+// 获取角色权限列表
+export const getRolePrivs = (roleId: number): HttpResponseType => {
+  return http.request("get", `/roles/${roleId}/privs/`);
+};
 /**
  * 获取按钮权限
  * @returns

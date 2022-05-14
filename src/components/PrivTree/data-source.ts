@@ -1924,3 +1924,141 @@ export const dataSourceEsrmOperates: Array<NetTree> = [
     privName: "自营风险周报:编辑按钮"
   }
 ];
+/**
+ * 角色拥有的权限
+ */
+export const dataSourceEsrmRoleGetMenus = [
+  {
+    privId: 257,
+    parentPrivId: 255,
+    privType: "M",
+    privCode: "m-proprietary-zyysp-onexchangemgr-upd",
+    privName: "场内持仓主动管理-编辑"
+  },
+  {
+    privId: 256,
+    parentPrivId: 49,
+    privType: "M",
+    privCode: "m-proprietary-manual-widebase",
+    privName: "宽基名单管理"
+  },
+  {
+    privId: 255,
+    parentPrivId: 253,
+    privType: "M",
+    privCode: "m-proprietary-zyysp-onexchangemgr",
+    privName: "场内持仓主动管理"
+  },
+  {
+    privId: 253,
+    parentPrivId: 2,
+    privType: "C",
+    privCode: "c-proprietary-zyysp",
+    privName: "衍生品"
+  },
+  {
+    privId: 252,
+    parentPrivId: 247,
+    privType: "M",
+    privCode: "m-proprietary-wwzg-custodiantemplate",
+    privName: "托管人及模板管理"
+  },
+  {
+    privId: 254,
+    parentPrivId: 253,
+    privType: "M",
+    privCode: "m-proprietary-zyysp-onexchangeqty",
+    privName: "场内持仓查询管理"
+  },
+  {
+    privId: 251,
+    parentPrivId: 247,
+    privType: "M",
+    privCode: "m-proprietary-wwzg-lastyearnetvalue",
+    privName: "上年年末资产净值配置"
+  },
+  {
+    privId: 250,
+    parentPrivId: 247,
+    privType: "M",
+    privCode: "m-proprietary-wwzg-position",
+    privName: "产品持仓"
+  },
+  {
+    privId: 249,
+    parentPrivId: 247,
+    privType: "M",
+    privCode: "m-proprietary-wwzg-structure",
+    privName: "产品结构树管理"
+  },
+  {
+    privId: 248,
+    parentPrivId: 247,
+    privType: "M",
+    privCode: "m-proprietary-wwzg-positionupload",
+    privName: "委外资管持仓文件管理"
+  },
+  {
+    privId: 247,
+    parentPrivId: 2,
+    privType: "C",
+    privCode: "c-proprietary-wwzg",
+    privName: "委外类"
+  },
+  {
+    privId: 246,
+    parentPrivId: 243,
+    privType: "M",
+    privCode: "m-risk-zjjc-uploadrecord",
+    privName: "导入文件管理"
+  },
+  {
+    privId: 245,
+    parentPrivId: 243,
+    privType: "M",
+    privCode: "m-risk-zjjc-expertarticle",
+    privName: "专家库监测"
+  },
+  {
+    privId: 244,
+    parentPrivId: 243,
+    privType: "M",
+    privCode: "m-risk-zjjc-expert",
+    privName: "专家库管理"
+  },
+  {
+    privId: 243,
+    parentPrivId: 1,
+    privType: "C",
+    privCode: "c-risk-zjjc",
+    privName: "专家库监测"
+  },
+  {
+    privId: 49,
+    parentPrivId: 2,
+    privType: "C",
+    privCode: "m-manual-config-entry",
+    privName: "手工配置"
+  },
+  {
+    privId: 51,
+    parentPrivId: 49,
+    privType: "M",
+    privCode: "m-manual-business",
+    privName: "自营业务配置"
+  },
+  {
+    privId: 1,
+    parentPrivId: 0,
+    privType: "C",
+    privCode: "c-system-mgr-root",
+    privName: "系统根"
+  },
+  {
+    privId: 2,
+    parentPrivId: 1,
+    privType: "C",
+    privCode: "c-proprietary-business",
+    privName: "自营业务"
+  }
+];

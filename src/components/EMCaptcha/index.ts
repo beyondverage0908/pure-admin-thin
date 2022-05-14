@@ -1,10 +1,16 @@
-import { h, defineComponent, withDirectives, resolveDirective } from "vue";
+import {
+  h,
+  defineComponent,
+  withDirectives,
+  resolveDirective,
+  onMounted
+} from "vue";
 import * as captchApi from "/@/api/captch";
 
 let compnentInstance = null;
 let contextId = "";
 let capt: EMCaptcha = null;
-const CONTAINER_ID = "containerId";
+const CONTAINER_ID = "em-captch-container-id";
 const APP_ID = "201901231134";
 const CONTEXT_ID_HIDE = "accountIdHide";
 const REFRESH_PWD = String(Date.now());
@@ -44,6 +50,7 @@ async function getContext() {
 
 const captchComponent = defineComponent({
   name: "captcha",
+  inheritAttrs: false,
   emits: {
     onSuccess: (contextId: string) => {
       if (!contextId) return false;
@@ -86,18 +93,21 @@ const captchComponent = defineComponent({
     const directiveContainer = VMotion
       ? withDirectives(container, [[VMotion]])
       : container;
-    return h(
-      "div",
-      {
-        style: {
-          display: "inline"
-        }
-      },
-      [contextIdInput, accountIdHideInput, directiveContainer]
-    );
+    // return h(
+    //   "div",
+    //   {
+    //     style: {
+    //       // display: "inline"
+    //     }
+    //   },
+    //   [contextIdInput, accountIdHideInput, directiveContainer]
+    // );
+    return [contextIdInput, accountIdHideInput, directiveContainer];
   },
   setup() {
-    getContext();
+    onMounted(() => {
+      getContext();
+    });
   },
   mounted() {
     compnentInstance = this;

@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { getConfig } from "/@/config";
 import { storageLocal } from "/@/utils/storage";
 import { deviceDetection } from "/@/utils/deviceDetection";
-import { getPrivs, getOperatePrivs } from "/@/api/role";
+import { getPrivs, getOperatePrivs, addPrivs } from "/@/api/role";
 import { recursiveConstructTreeData } from "/@/components/PrivTree/util";
 
 export const useAppStore = defineStore({
@@ -69,6 +69,10 @@ export const useAppStore = defineStore({
       if (!menuPrivs) this.privCodes = [];
       const privs = menuPrivs.concat(operatePrivs || []);
       this.privCodes = [recursiveConstructTreeData(privs)];
+    },
+    async addPrivs(roleId: number, privs: number[]): Promise<boolean> {
+      const data = await addPrivs(roleId, privs);
+      return data.data;
     }
   }
 });

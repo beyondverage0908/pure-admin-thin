@@ -71,12 +71,7 @@ import { defineComponent, ref, reactive, watch, onMounted } from "vue";
 import { getRoles, deleteRole, editRole, addRole } from "/@/api/role";
 import { ElMessageBox } from "element-plus";
 import type { FormInstance, FormRules, ElTable } from "element-plus";
-
-export interface RoleRow {
-  roleId: number;
-  roleName: string;
-  remark?: string;
-}
+import { RoleRow } from "./type";
 
 enum EditMode {
   add = "1",

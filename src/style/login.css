@@ -165,6 +165,7 @@ a:hover {
   font-family: "Roboto", sans-serif;
   background-size: 200%;
   transition: 0.5s;
+  transform: none !important;
 }
 
 .btn:hover {
