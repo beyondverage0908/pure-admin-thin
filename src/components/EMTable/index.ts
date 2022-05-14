@@ -9,6 +9,7 @@ import {
 } from "vue";
 import { ElTable, ElPagination } from "element-plus";
 import EmColumnsFilter from "/@/components/EMColumnsFilter";
+import DynamicHeight from "/@/components/DynamicHeight";
 
 interface Emits {
   (e: "page-change", v: { pageSize: number; page: number }): void;
@@ -67,7 +68,7 @@ const EmTable = defineComponent({
       }
     }
   },
-  emits: ["page-change", "update:pageSize"],
+  emits: ["page-change", "update:pageSize", "update:current"],
   setup(props, { expose, emit }) {
     const currInstance = getCurrentInstance();
     // 获取table的实例方法
@@ -142,7 +143,7 @@ const createMainContainer = (
       h("div", [toolbarRight, toolbarRightDefaultAction])
     ]
   );
-
+  // ElementPlus Table的默认插槽 - el-table-column
   let vnodes = instance.$slots.default() as any[];
   if (_filterColumns) {
     const filterVnodes = vnodes.filter(node => {
@@ -156,15 +157,28 @@ const createMainContainer = (
     });
     vnodes = filterVnodes;
   }
-  const Table = h(
-    ElTable,
+  const generateTable = (tableHgith: number) => {
+    // console.log(instance.$attrs);
+    const Table = h(
+      ElTable,
+      {
+        // 动态计算出
+        height: tableHgith,
+        ...instance.$attrs,
+        ref: INNER_TABLE_REF
+      },
+      () => vnodes
+    );
+    return Table;
+  };
+  const DynamicHeightTable = h(
+    DynamicHeight,
+    {},
     {
-      ...instance.$attrs,
-      ref: INNER_TABLE_REF
-    },
-    () => vnodes
+      default: (scope: { height: number }) => generateTable(scope.height)
+    }
   );
-  return h("div", {}, [Toolbar, Table]);
+  return h("div", {}, [Toolbar, DynamicHeightTable]);
 };
 // 创建footerbar区域
 const createFooterbar = (instance: any, props: any, emit: Emits): VNode => {
