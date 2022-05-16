@@ -2,16 +2,48 @@ import { messageBaseInfo, Method, MockType } from "./base";
 import { MockMethod } from "vite-plugin-mock";
 import {
   dataSourceMenuEsrm,
-  dataSourceEsrmOperates
+  dataSourceEsrmOperates,
+  dataSourceEsrmRoleGetMenus
 } from "/@/components/PrivTree/data-source";
+// const getCurrentUserInfo = (): MockType => ({
+//   url: "/p2hmgr/api/users/cur-user",
+//   method: Method.get,
+//   response: () => {
+//     return { ...messageBaseInfo, data: {} };
+//   }
+// });
 
-const getPrivs = () => ({
+const getRolePrivs = (): MockType => ({
+  url: /p2hmgr\/api\/roles\/\d\/privs/,
+  method: Method.get,
+  response: () => ({
+    ...messageBaseInfo,
+    data: dataSourceEsrmRoleGetMenus
+  })
+});
+
+// 获取菜单权限
+const getPrivs = (): MockType => ({
   url: "/p2hmgr/api/privs",
-  method: "get",
+  method: Method.get,
   response: () => {
     return {
       ...messageBaseInfo,
       data: dataSourceMenuEsrm
+    };
+  }
+});
+/**
+ *
+ * @returns 添加角色
+ */
+const addPrivs = (): MockType => ({
+  url: /p2hmgr\/api\/roles\/\d\/privs/,
+  method: Method.post,
+  response: () => {
+    return {
+      ...messageBaseInfo,
+      data: true
     };
   }
 });
@@ -189,5 +221,7 @@ export default [
   addRole(),
   getRoleUsers(),
   getAppendRoleUsers(),
-  appendRoleUsers()
+  appendRoleUsers(),
+  addPrivs(),
+  getRolePrivs()
 ] as MockMethod[];
