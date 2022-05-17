@@ -1,6 +1,7 @@
 import { App } from "vue";
 import axios from "axios";
 import { loadEnv } from "@build/index";
+import { useUserStore } from "/@/store/modules/user";
 
 let config: object = {};
 const Env = loadEnv();
@@ -50,6 +51,14 @@ export const getServerConfig = async (app: App): Promise<undefined> => {
     })
     .catch(() => {
       throw "请在public文件夹下添加serverConfig.json配置文件";
+    });
+};
+// 判断用户是否登录
+export const getUserInfo = async (): Promise<boolean> => {
+  return useUserStore()
+    .getUserLoginInfo()
+    .then(isLogin => {
+      return isLogin;
     });
 };
 

@@ -20,7 +20,7 @@ const onLogin = (): void => {
     accessToken: "eyJhbGciOiJIUzUxMiJ9.test"
   });
   initRouter("admin").then(() => {});
-  router.push("/");
+  router.replace("/");
 };
 
 function onUserFocus() {
@@ -129,7 +129,7 @@ function handleCheckSuccess(cxtId: string) {
             />
           </div>
         </div>
-        <EMCaptcha @on-success="handleCheckSuccess" />
+        <EMCaptcha @success="handleCheckSuccess" />
         <button
           class="btn"
           v-motion

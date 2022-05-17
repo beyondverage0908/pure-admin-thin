@@ -1,14 +1,8 @@
 import { http } from "../utils/http";
 
-interface userType extends Promise<any> {
-  svg?: string;
-  code?: number;
-  info?: object;
-}
-
-// 获取验证码
-export const getVerify = (): userType => {
-  return http.request("get", "/captcha");
+// 获取已登录的信息
+export const getUserInfo = (): HttpResponseType => {
+  return http.request("get", "/users/cur-user");
 };
 
 // 登录
@@ -20,7 +14,3 @@ export const getLogin = (data: object) => {
 export const refreshToken = (data: object) => {
   return http.request("post", "/refreshToken", { data });
 };
-
-// export const searchVague = (data: object) => {
-//   return http.request("post", "/searchVague", { data });
-// };

@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import { store } from "/@/store";
-import { userType } from "./types";
+import { userType, userInfoType } from "./types";
 import { router } from "/@/router";
 import { storageSession } from "/@/utils/storage";
-import { getLogin, refreshToken } from "/@/api/user";
+import { getLogin, refreshToken, getUserInfo } from "/@/api/user";
 import { getToken, setToken, removeToken } from "/@/utils/auth";
+import { isEmpty } from "/@/utils/is";
 import { useMultiTagsStoreHook } from "/@/store/modules/multiTags";
 
 const data = getToken();
@@ -19,17 +20,43 @@ if (data) {
 }
 
 export const useUserStore = defineStore({
-  id: "pure-user",
+  id: "user",
   state: (): userType => ({
     token,
-    name
+    name,
+    userInfo: {}
   }),
+  getters: {
+    userId: state => state.userInfo.userId,
+    menuPrivs: state => state.userInfo.menuPrivs || [],
+    operatePrivs: state => state.userInfo.operatePrivs || [],
+    isLogin: state => isEmpty(state.userInfo)
+  },
   actions: {
     SET_TOKEN(token) {
       this.token = token;
     },
     SET_NAME(name) {
       this.name = name;
+    },
+    SET_USERINFO(userInfo: userInfoType) {
+      this.userInfo = userInfo;
+    },
+    // 获取登录用户的信息
+    async getUserLoginInfo() {
+      return getUserInfo().then(data => {
+        if (!data.success) {
+          return false;
+        }
+        const userInfo = data.data as userInfoType;
+        if (isEmpty(userInfo as object)) {
+          return false;
+        }
+        this.SET_NAME(userInfo.userName);
+        this.SET_USERINFO(userInfo);
+        storageSession.setItem("info", { username: userInfo.userName });
+        return true;
+      });
     },
     // 登入
     async loginByUsername(data) {

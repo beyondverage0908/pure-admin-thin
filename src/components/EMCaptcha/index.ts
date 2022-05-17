@@ -24,12 +24,10 @@ function refreshCaptcha() {
     product: "float"
   })
     .onSuccess(() => {
-      console.log("成功：", contextId);
-      compnentInstance.$emit("onSuccess", contextId);
+      compnentInstance.$emit("success", contextId);
     })
     .onError(() => {
-      console.log("失败");
-      compnentInstance.$emit("onError");
+      compnentInstance.$emit("error");
     });
   // 账户input控件
   const input = document.getElementById(CONTEXT_ID_HIDE) as any;
@@ -52,11 +50,11 @@ const captchComponent = defineComponent({
   name: "captcha",
   inheritAttrs: false,
   emits: {
-    onSuccess: (contextId: string) => {
+    success: (contextId: string) => {
       if (!contextId) return false;
       return true;
     },
-    onError: () => true
+    error: () => true
   },
   render() {
     const CONTEXT_ID = "contextId";
@@ -93,19 +91,10 @@ const captchComponent = defineComponent({
     const directiveContainer = VMotion
       ? withDirectives(container, [[VMotion]])
       : container;
-    // return h(
-    //   "div",
-    //   {
-    //     style: {
-    //       // display: "inline"
-    //     }
-    //   },
-    //   [contextIdInput, accountIdHideInput, directiveContainer]
-    // );
     return [contextIdInput, accountIdHideInput, directiveContainer];
   },
   setup() {
-    onMounted(() => {
+    onMounted(function () {
       getContext();
     });
   },

@@ -1,7 +1,7 @@
 import App from "./App.vue";
 import router from "./router";
 import { setupStore } from "/@/store";
-import { getServerConfig } from "./config";
+import { getServerConfig, getUserInfo } from "./config";
 import { createApp, Directive } from "vue";
 import { useI18n } from "../src/plugins/i18n";
 import { MotionPlugin } from "@vueuse/motion";
@@ -37,10 +37,11 @@ app.component("IconifyIconOnline", IconifyIconOnline);
 app.component("FontIcon", FontIcon);
 
 getServerConfig(app).then(async config => {
+  setupStore(app);
   app.use(router);
   await router.isReady();
   injectResponsiveStorage(app, config);
-  setupStore(app);
   app.use(MotionPlugin).use(useI18n).use(useElementPlus);
   app.mount("#app");
+  getUserInfo().then(async () => {});
 });

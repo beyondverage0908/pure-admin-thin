@@ -38,7 +38,24 @@ export type setType = {
   hiddenSideBar: boolean;
 };
 
+interface PrivConfig {
+  parentPrivId: number;
+  privCode: string;
+  privId: number;
+  privName: string;
+  privType: "C" | "A" | "M";
+}
+
+export type userInfoType = {
+  userId?: string | number;
+  userName?: string;
+  realName?: string;
+  menuPrivs?: PrivConfig[];
+  operatePrivs?: PrivConfig[];
+};
+
 export type userType = {
   token: string;
   name?: string;
+  userInfo?: userInfoType;
 };

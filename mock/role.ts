@@ -5,13 +5,6 @@ import {
   dataSourceEsrmOperates,
   dataSourceEsrmRoleGetMenus
 } from "/@/components/PrivTree/data-source";
-// const getCurrentUserInfo = (): MockType => ({
-//   url: "/p2hmgr/api/users/cur-user",
-//   method: Method.get,
-//   response: () => {
-//     return { ...messageBaseInfo, data: {} };
-//   }
-// });
 
 const getRolePrivs = (): MockType => ({
   url: /p2hmgr\/api\/roles\/\d\/privs/,
