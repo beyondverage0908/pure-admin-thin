@@ -75,6 +75,7 @@ export const router: Router = createRouter({
 const whiteList = ["/login"];
 
 router.beforeEach((to: toRouteType, _from, next) => {
+  console.log("1. ", to);
   if (to.meta?.keepAlive) {
     const newMatched = to.matched;
     handleAliveRoute(newMatched, "add");
@@ -86,7 +87,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
   const name = storageSession.getItem("info");
   NProgress.start();
   const externalLink = isUrl(to?.name);
-  if (!externalLink)
+  if (!externalLink) {
     to.matched.some(item => {
       if (!item.meta.title) return "";
       const Title = getConfig().Title;
@@ -97,7 +98,11 @@ router.beforeEach((to: toRouteType, _from, next) => {
         )} | ${Title}`;
       else document.title = transformI18n(item.meta.title, item.meta?.i18n);
     });
+  }
+  console.log("2. ", name);
   if (name) {
+    // 已经登录状态
+    console.log("4. ", _from);
     if (_from?.name) {
       // name为超链接
       if (externalLink) {
@@ -108,8 +113,10 @@ router.beforeEach((to: toRouteType, _from, next) => {
       }
     } else {
       // 刷新
+      console.log("5. ", usePermissionStoreHook().wholeMenus.length);
       if (usePermissionStoreHook().wholeMenus.length === 0)
         initRouter(name.username).then((router: Router) => {
+          console.log("6. ", router);
           if (!useMultiTagsStoreHook().getMultiTagsCache) {
             const handTag = (
               path: string,
@@ -181,6 +188,8 @@ router.beforeEach((to: toRouteType, _from, next) => {
       next();
     }
   } else {
+    console.log("3. ", to.path);
+    // 未获取到登录用户信息
     if (to.path !== "/login") {
       if (whiteList.indexOf(to.path) !== -1) {
         next();

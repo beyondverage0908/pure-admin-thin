@@ -117,6 +117,8 @@ function resetRouter(): void {
 function initRouter(name: string) {
   return new Promise(resolve => {
     getAsyncRoutes({ name }).then(({ info }) => {
+      console.log("I: ", info);
+      debugger;
       if (info.length === 0) {
         usePermissionStoreHook().changeSetting(info);
       } else {
