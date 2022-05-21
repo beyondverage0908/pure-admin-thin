@@ -24,7 +24,12 @@ function refreshCaptcha() {
     product: "float"
   })
     .onSuccess(() => {
-      compnentInstance.$emit("success", contextId);
+      const validate = capt.getValidate().validate;
+      const contextId = capt.getValidate().contextId;
+      compnentInstance.$emit("success", {
+        validate,
+        contextId
+      });
     })
     .onError(() => {
       compnentInstance.$emit("error");
@@ -50,8 +55,8 @@ const captchComponent = defineComponent({
   name: "captcha",
   inheritAttrs: false,
   emits: {
-    success: (contextId: string) => {
-      if (!contextId) return false;
+    success: (context: EMCaptchaContext) => {
+      if (!context) return false;
       return true;
     },
     error: () => true

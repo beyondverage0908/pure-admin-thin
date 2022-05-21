@@ -38,7 +38,7 @@ export type setType = {
   hiddenSideBar: boolean;
 };
 
-interface PrivConfig {
+export interface PrivConfig {
   parentPrivId: number;
   privCode: string;
   privId: number;

@@ -1,7 +1,26 @@
 import { App } from "vue";
 import axios from "axios";
 import { loadEnv } from "@build/index";
-import { useUserStore } from "/@/store/modules/user";
+import { getUserInfo } from "/@/api/user";
+import { isEmpty } from "/@/utils/is";
+import { storageSession } from "/@/utils/storage";
+import { useUserStoreHook } from "/@/store/modules/user";
+
+interface PrivConfig {
+  parentPrivId: number;
+  privCode: string;
+  privId: number;
+  privName: string;
+  privType: "C" | "A" | "M";
+}
+
+export type userInfoType = {
+  userId?: string | number;
+  userName?: string;
+  realName?: string;
+  menuPrivs?: PrivConfig[];
+  operatePrivs?: PrivConfig[];
+};
 
 let config: object = {};
 const Env = loadEnv();
@@ -53,13 +72,28 @@ export const getServerConfig = async (app: App): Promise<undefined> => {
       throw "请在public文件夹下添加serverConfig.json配置文件";
     });
 };
-// 判断用户是否登录
-export const getUserInfo = async (): Promise<boolean> => {
-  return useUserStore()
-    .getUserLoginInfo()
-    .then(isLogin => {
-      return isLogin;
-    });
+
+// 获取登录用户的信息
+export const getUserLoginInfo = async () => {
+  return getUserInfo().then(data => {
+    if (!data.success) {
+      storageSession.removeItem("info");
+      return {};
+    }
+    const userInfo = data.data as userInfoType;
+    if (isEmpty(userInfo as object)) {
+      storageSession.removeItem("info");
+      return {};
+    }
+    return userInfo;
+  });
+};
+// 设置userInfo到store中
+export const setupUserInfo = (userInfo?: userInfoType) => {
+  const userStore = useUserStoreHook();
+  userStore.SET_NAME(userInfo?.userName);
+  userStore.SET_USERINFO(userInfo);
+  storageSession.setItem("info", { username: userInfo.userName });
 };
 
 export { getConfig, setConfig };

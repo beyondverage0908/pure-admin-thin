@@ -12,13 +12,13 @@ import { useTimeoutFn } from "@vueuse/core";
 import { RouteConfigs } from "/@/layout/types";
 import { buildHierarchyTree } from "/@/utils/tree";
 import { usePermissionStoreHook } from "/@/store/modules/permission";
+import { useUserStoreHook } from "/@/store/modules/user";
+import { PrivConfig } from "../store/modules/types";
 const Layout = () => import("/@/layout/index.vue");
 const IFrame = () => import("/@/layout/frameView.vue");
+
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
-
-// 动态路由
-import { getAsyncRoutes } from "/@/api/routes";
 
 // 按照路由中meta下的rank等级升序来排序路由
 function ascending(arr: any[]) {
@@ -112,13 +112,38 @@ function resetRouter(): void {
     }
   });
 }
+// 通过路由的权限点返回路由数据
+function filterDynamicRoutes(
+  dynamicRoutes: RouteRecordRaw[],
+  menuPrivs: PrivConfig[]
+): RouteRecordRaw[] {
+  console.log(dynamicRoutes);
+  console.log(menuPrivs);
+  return dynamicRoutes;
+}
+// 获取动态路由
+function getAsyncRoutes(): Promise<Array<RouteRecordRaw>> {
+  return new Promise((resolve, reject) => {
+    // 动态载入路由
+    import("./dynamic")
+      .then(router => {
+        const routes = filterDynamicRoutes(
+          router.default,
+          useUserStoreHook().menuPrivs
+        );
+        resolve(routes);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+}
 
 // 初始化路由
-function initRouter(name: string) {
+function initRouter() {
   return new Promise(resolve => {
-    getAsyncRoutes({ name }).then(({ info }) => {
-      console.log("I: ", info);
-      debugger;
+    getAsyncRoutes().then(routes => {
+      const info = routes;
       if (info.length === 0) {
         usePermissionStoreHook().changeSetting(info);
       } else {
@@ -238,8 +263,7 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
     } else {
       // 对后端传component组件路径和不传做兼容（如果后端传component组件路径，那么path可以随便写，如果不传，component组件路径会根path保持一致）
       const index = v?.component
-        ? // @ts-expect-error
-          modulesRoutesKeys.findIndex(ev => ev.includes(v.component))
+        ? modulesRoutesKeys.findIndex(ev => v.component.toString().includes(ev))
         : modulesRoutesKeys.findIndex(ev => ev.includes(v.path));
       v.component = modulesRoutes[modulesRoutesKeys[index]];
     }

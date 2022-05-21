@@ -1,7 +1,7 @@
 import { $t } from "/@/plugins/i18n";
 const Layout = () => import("/@/layout/index.vue");
 
-export default {
+const demoRouter = {
   path: "/demo",
   name: "demo",
   component: Layout,
@@ -10,22 +10,26 @@ export default {
     icon: "information-line",
     title: $t("demo.home"),
     i18n: true,
-    rank: 9
+    rank: 9,
+    access: ["c-system-mgr-root"]
   },
   children: [
     {
       meta: {
         title: $t("demo.tablepage"),
-        i18n: true
+        i18n: true,
+        access: ["c-proprietary-business"]
       },
-      path: "/demo/table",
+      path: "/demo/table/index",
       name: "demo-table",
-      component: () => import("/@/views/demo/table/index.vue")
+      // component: () => import("/@/views/demo/table/index.vue")
+      component: () => import("../../views/demo/table/index.vue")
     },
     {
       meta: {
         title: $t("demo.todo"),
-        i18n: true
+        i18n: true,
+        access: ["c-work-flow-1"]
       },
       path: "/demo/todo",
       name: "demo-todo",
@@ -42,3 +46,5 @@ export default {
     }
   ]
 };
+
+export default demoRouter;

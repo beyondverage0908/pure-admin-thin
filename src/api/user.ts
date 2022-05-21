@@ -6,11 +6,11 @@ export const getUserInfo = (): HttpResponseType => {
 };
 
 // 登录
-export const getLogin = (data: object) => {
+export const getLogin = (data: object): HttpResponseType => {
   return http.request("post", "/login", { data });
 };
 
 // 刷新token
-export const refreshToken = (data: object) => {
+export const refreshToken = (data: object): HttpResponseType => {
   return http.request("post", "/refreshToken", { data });
 };

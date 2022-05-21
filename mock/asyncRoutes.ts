@@ -1,11 +1,15 @@
 // 根据角色动态生成路由
 import { MockMethod } from "vite-plugin-mock";
 
+function $t(key: string) {
+  return key;
+}
+
 const permissionRouter = {
   path: "/permission",
   redirect: "/permission/page/index",
   meta: {
-    title: "menus.permission",
+    title: $t("menus.permission"),
     icon: "lollipop",
     i18n: true,
     rank: 7
@@ -15,7 +19,7 @@ const permissionRouter = {
       path: "/permission/page/index",
       name: "permissionPage",
       meta: {
-        title: "menus.permissionPage",
+        title: $t("menus.permissionPage"),
         i18n: true
       }
     },
@@ -23,7 +27,7 @@ const permissionRouter = {
       path: "/permission/button/index",
       name: "permissionButton",
       meta: {
-        title: "menus.permissionButton",
+        title: $t("menus.permissionButton"),
         i18n: true,
         authority: []
       }

@@ -27,6 +27,7 @@ module.exports = {
     ForDataType: "readonly",
     ComponentRoutes: "readonly",
     EMCaptcha: "readonly",
+    EMCaptchaContext: "readonly",
 
     // script setup
     defineProps: "readonly",

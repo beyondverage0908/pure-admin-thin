@@ -3,10 +3,11 @@ import { store } from "/@/store";
 import { userType, userInfoType } from "./types";
 import { router } from "/@/router";
 import { storageSession } from "/@/utils/storage";
-import { getLogin, refreshToken, getUserInfo } from "/@/api/user";
+import { getLogin, refreshToken } from "/@/api/user";
 import { getToken, setToken, removeToken } from "/@/utils/auth";
 import { isEmpty } from "/@/utils/is";
 import { useMultiTagsStoreHook } from "/@/store/modules/multiTags";
+import { setupUserInfo } from "/@/config";
 
 const data = getToken();
 let token = "";
@@ -30,7 +31,7 @@ export const useUserStore = defineStore({
     userId: state => state.userInfo.userId,
     menuPrivs: state => state.userInfo.menuPrivs || [],
     operatePrivs: state => state.userInfo.operatePrivs || [],
-    isLogin: state => isEmpty(state.userInfo)
+    isLogin: state => !isEmpty(state.userInfo)
   },
   actions: {
     SET_TOKEN(token) {
@@ -42,30 +43,14 @@ export const useUserStore = defineStore({
     SET_USERINFO(userInfo: userInfoType) {
       this.userInfo = userInfo;
     },
-    // 获取登录用户的信息
-    async getUserLoginInfo() {
-      return getUserInfo().then(data => {
-        if (!data.success) {
-          return false;
-        }
-        const userInfo = data.data as userInfoType;
-        if (isEmpty(userInfo as object)) {
-          return false;
-        }
-        this.SET_NAME(userInfo.userName);
-        this.SET_USERINFO(userInfo);
-        storageSession.setItem("info", { username: userInfo.userName });
-        return true;
-      });
-    },
     // 登入
     async loginByUsername(data) {
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<boolean>((resolve, reject) => {
         getLogin(data)
           .then(data => {
             if (data) {
-              setToken(data);
-              resolve();
+              setupUserInfo(data.data);
+              resolve(data.success);
             }
           })
           .catch(error => {
