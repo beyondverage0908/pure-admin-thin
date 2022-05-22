@@ -29,11 +29,10 @@ import {
 } from "./utils";
 
 import homeRouter from "./modules/home";
-import errorRouter from "./modules/error";
 import remainingRouter from "./modules/remaining";
 
 // 原始静态路由（未做任何处理）
-const routes = [homeRouter, errorRouter];
+const routes = [homeRouter];
 
 // 导出处理后的静态路由（三级及以上的路由全部拍成二级）
 export const constantRoutes: Array<RouteRecordRaw> = formatTwoStageRoutes(
@@ -109,7 +108,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
       }
     } else {
       // 刷新
-      if (usePermissionStoreHook().wholeMenus.length === 0)
+      if (usePermissionStoreHook().wholeMenus.length === 0) {
         initRouter().then((router: Router) => {
           if (!useMultiTagsStoreHook().getMultiTagsCache) {
             const handTag = (
@@ -179,7 +178,15 @@ router.beforeEach((to: toRouteType, _from, next) => {
           }
           router.push(to.fullPath);
         });
-      next();
+      }
+      const hasTarget = !!router
+        .getRoutes()
+        .find(route => route.path === to.path);
+      if (hasTarget) {
+        next();
+      } else {
+        next({ path: "/error/404" });
+      }
     }
   } else {
     // 未获取到登录用户信息

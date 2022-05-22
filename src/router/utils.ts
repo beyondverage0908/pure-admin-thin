@@ -112,14 +112,42 @@ function resetRouter(): void {
     }
   });
 }
+function hasPermission(routeAccess: string[], menuPrivs: PrivConfig[]) {
+  const privCodes = menuPrivs!.map(item => item.privCode);
+  return privCodes.some(item => routeAccess.includes(item));
+}
 // 通过路由的权限点返回路由数据
 function filterDynamicRoutes(
   dynamicRoutes: RouteRecordRaw[],
   menuPrivs: PrivConfig[]
 ): RouteRecordRaw[] {
-  console.log(dynamicRoutes);
-  console.log(menuPrivs);
-  return dynamicRoutes;
+  const filteredRoutes = [];
+  const filterRoutes = (
+    routes: RouteRecordRaw[],
+    parentRoute?: RouteRecordRaw
+  ) => {
+    const children = [];
+    routes.forEach(route => {
+      const access = route.meta.access as string[];
+      // 未设置权限，权限列表为空，或者匹配了后台的权限（一个或者多个），则都表明是拥有访问该路由的权限
+      if (!access || access.length === 0 || hasPermission(access, menuPrivs)) {
+        if (!parentRoute) {
+          filteredRoutes.push(route);
+        } else {
+          children.push(route);
+        }
+        if (route.children && route.children.length) {
+          filterRoutes(route.children, route);
+        }
+      }
+    });
+    if (parentRoute) {
+      parentRoute.children = children;
+    }
+  };
+  filterRoutes(dynamicRoutes);
+  console.log(filteredRoutes);
+  return filteredRoutes;
 }
 // 获取动态路由
 function getAsyncRoutes(): Promise<Array<RouteRecordRaw>> {

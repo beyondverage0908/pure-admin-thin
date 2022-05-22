@@ -1,4 +1,5 @@
 import { $t } from "/@/plugins/i18n";
+import errorRouter from "./error";
 const Layout = () => import("/@/layout/index.vue");
 
 const remainingRouter = [
@@ -13,6 +14,7 @@ const remainingRouter = [
       rank: 101
     }
   },
+  ...errorRouter,
   {
     path: "/redirect",
     component: Layout,

@@ -29,7 +29,7 @@ const demoRouter = {
       meta: {
         title: $t("demo.todo"),
         i18n: true,
-        access: ["c-work-flow-1"]
+        access: ["c-work-flow"]
       },
       path: "/demo/todo",
       name: "demo-todo",
@@ -41,7 +41,8 @@ const demoRouter = {
       component: () => import("/@/views/demo/role/index.vue"),
       meta: {
         title: $t("demo.role"),
-        i18n: true
+        i18n: true,
+        access: []
       }
     }
   ]
