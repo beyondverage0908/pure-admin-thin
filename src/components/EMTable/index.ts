@@ -38,6 +38,7 @@ function getTableColumns(
 let _filterColumns: Column[] = [];
 
 const EmTable = defineComponent({
+  name: "EmTable",
   inheritAttrs: false, // 根节点没必要继承属性
   props: {
     total: {
@@ -98,17 +99,20 @@ const createMainContainer = (
   props: any,
   id: Ref<number>
 ): VNode => {
+  if (!instance) return;
   const toolbarLeft = instance.$slots.toolbarLeft
     ? instance.$slots.toolbarLeft()
     : h("div");
   const toolbarRight = instance.$slots.toolbarRight
     ? instance.$slots.toolbarRight()
     : null;
-  const tableDefaultNodes = instance.$slots.default();
+  const tableDefaultNodes = instance.$slots.default
+    ? instance.$slots.default()
+    : [];
   const columns = getTableColumns(tableDefaultNodes);
 
-  const updateColumns = (filterColumns: Array<Column>) => {
-    _filterColumns = filterColumns;
+  const updateColumns = (filterColumns?: Array<Column>) => {
+    _filterColumns = filterColumns ? filterColumns : [];
     /**
      * 主要是利用Vue对数据的依赖手机，来触发render函数的更新，暂无其他方式可以调用render函数
      * 在render函数被重新触发，会重新收集Table组件的slot，获取VNodes，然后通过结合filterColumns
@@ -144,7 +148,9 @@ const createMainContainer = (
     ]
   );
   // ElementPlus Table的默认插槽 - el-table-column
-  let vnodes = instance.$slots.default() as any[];
+  let vnodes = (
+    instance.$slots.default ? instance.$slots.default() : []
+  ) as any[];
   if (_filterColumns) {
     const filterVnodes = vnodes.filter(node => {
       if (node.props.label === undefined) {

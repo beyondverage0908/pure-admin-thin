@@ -182,6 +182,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
       const hasTarget = !!router
         .getRoutes()
         .find(route => route.path === to.path);
+      console.log("router has target: ", hasTarget);
       if (hasTarget) {
         next();
       } else {

@@ -1,3 +1,4 @@
 import demoRouter from "./modules/demo";
+import systemRouter from "./modules/system";
 
-export default [demoRouter];
+export default [systemRouter, demoRouter];

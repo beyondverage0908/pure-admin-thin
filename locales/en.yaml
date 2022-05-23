@@ -28,8 +28,11 @@ menus:
   permission: Permission Manage
   permissionPage: Page Permission
   permissionButton: Button Permission
+system:
+  system: System Manage
+  user: User Manage,
+  role: Role Manage
 demo:
-  home: SystemManage
+  home: Vue3.x Demo
   tablepage: Table Page
   todo: TODO
-  role: Role Manage

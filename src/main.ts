@@ -33,13 +33,13 @@ import {
   IconifyIconOnline,
   FontIcon
 } from "./components/ReIcon";
+import useEmComponent from "./plugins/em-component";
 app.component("IconifyIconOffline", IconifyIconOffline);
 app.component("IconifyIconOnline", IconifyIconOnline);
 app.component("FontIcon", FontIcon);
 
 const serverConfigPromise = getServerConfig(app);
 const userInfoPromise = getUserLoginInfo();
-
 Promise.all([serverConfigPromise, userInfoPromise]).then(async results => {
   const config = results[0];
   const userInfo = results[1];
@@ -48,7 +48,7 @@ Promise.all([serverConfigPromise, userInfoPromise]).then(async results => {
   app.use(router);
   await router.isReady();
   injectResponsiveStorage(app, config);
-  app.use(MotionPlugin).use(useI18n).use(useElementPlus);
+  app.use(MotionPlugin).use(useI18n).use(useElementPlus).use(useEmComponent);
   app.mount("#app");
   if (!isEmpty(userInfo) && router.currentRoute.value.path === "/login") {
     // 已登录的用户访问登录界面，默认重定向到首页

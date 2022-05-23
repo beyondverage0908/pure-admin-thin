@@ -43,6 +43,7 @@ function getRefectComumns(columns: Array<Column>) {
 }
 
 const EmColumnsFilter = defineComponent({
+  name: "EmColumnsFilter",
   props: {
     columns: {
       type: Array as PropType<Props["columns"]>,

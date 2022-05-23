@@ -28,8 +28,11 @@ menus:
   permission: 权限管理
   permissionPage: 页面权限
   permissionButton: 按钮权限
+system:
+  system: 系统管理
+  user: 用户管理
+  role: 角色管理
 demo:
-  home: 系统管理
+  home: Vue3示例界面
   tablepage: TABLE页面
   todo: TODO页面
-  role: 角色管理

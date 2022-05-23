@@ -146,7 +146,6 @@ function filterDynamicRoutes(
     }
   };
   filterRoutes(dynamicRoutes);
-  console.log(filteredRoutes);
   return filteredRoutes;
 }
 // 获取动态路由
