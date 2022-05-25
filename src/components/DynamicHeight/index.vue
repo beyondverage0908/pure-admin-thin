@@ -4,7 +4,7 @@
   </main>
 </template>
 <script lang="ts" setup>
-import { ref, defineProps, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 
 interface Emits {
   (e: "on-height", val: number): void;

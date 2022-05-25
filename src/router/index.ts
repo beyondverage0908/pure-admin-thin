@@ -98,7 +98,9 @@ router.beforeEach((to: toRouteType, _from, next) => {
   }
   if (name) {
     // 已经登录状态
-    if (_from?.name) {
+    if (to?.name === "login") {
+      next({ path: "/" });
+    } else if (_from?.name) {
       // name为超链接
       if (externalLink) {
         openLink(to?.name);
@@ -178,15 +180,8 @@ router.beforeEach((to: toRouteType, _from, next) => {
           }
           router.push(to.fullPath);
         });
-      }
-      const hasTarget = !!router
-        .getRoutes()
-        .find(route => route.path === to.path);
-      console.log("router has target: ", hasTarget);
-      if (hasTarget) {
-        next();
       } else {
-        next({ path: "/error/404" });
+        next();
       }
     }
   } else {
