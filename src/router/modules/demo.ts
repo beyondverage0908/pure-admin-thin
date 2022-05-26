@@ -33,6 +33,36 @@ const demoRouter = {
       path: "/demo/todo",
       name: "demo-todo",
       component: () => import("/@/views/demo/todo/index.vue")
+    },
+    {
+      meta: {
+        title: $t("demo.option-api"),
+        i18n: true,
+        access: []
+      },
+      path: "/demo/option/api",
+      name: "demo-option-api",
+      component: () => import("/@/views/demo/option-api/index.vue")
+    },
+    {
+      meta: {
+        title: $t("demo.composition-api"),
+        i18n: true,
+        access: []
+      },
+      path: "/demo/composition/api",
+      name: "demo-composition-api",
+      component: () => import("/@/views/demo/composition-api/index.vue")
+    },
+    {
+      meta: {
+        title: $t("demo.render-api"),
+        i18n: true,
+        access: []
+      },
+      path: "/demo/render/api",
+      name: "demo-render-api",
+      component: () => import("/@/views/demo/render-api/index.vue")
     }
   ]
 };

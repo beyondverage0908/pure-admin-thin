@@ -36,3 +36,7 @@ demo:
   home: Vue3.x Demo
   tablepage: Table Page
   todo: TODO
+  option-api: OptionApi Page
+  composition-api: CompositionApi Page
+  render-api: RenderApi Page
+  jsx-api: JsxApi Page

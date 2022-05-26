@@ -97,7 +97,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
     });
   }
   if (name) {
-    // 已经登录状态
+    // 已登录的用户访问登录界面，默认重定向到首页
     if (to?.name === "login") {
       next({ path: "/" });
     } else if (_from?.name) {
@@ -190,6 +190,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
       if (whiteList.indexOf(to.path) !== -1) {
         next();
       } else {
+        // 非登录用户直接访问其他界面，重定向到登录界面
         next({ path: "/login" });
       }
     } else {

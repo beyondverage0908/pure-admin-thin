@@ -36,3 +36,7 @@ demo:
   home: Vue3示例界面
   tablepage: TABLE页面
   todo: TODO页面
+  option-api: OptionApi页面
+  composition-api: CompositionApi页面
+  render-api: RenderApi页面
+  jsx-api: JsxApi页面

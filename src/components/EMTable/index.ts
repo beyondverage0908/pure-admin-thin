@@ -143,7 +143,7 @@ const createMainContainer = (
       }
     },
     [
-      h("div", [toolbarLeft]),
+      h("div", {}, { default: () => toolbarLeft }),
       h("div", [toolbarRight, toolbarRightDefaultAction])
     ]
   );

@@ -6,8 +6,8 @@ import { createApp, Directive } from "vue";
 import { useI18n } from "../src/plugins/i18n";
 import { MotionPlugin } from "@vueuse/motion";
 import { useElementPlus } from "../src/plugins/element-plus";
+import useEmComponent from "/@/plugins/em-component";
 import { injectResponsiveStorage } from "/@/utils/storage/responsive";
-// import { isEmpty } from "/@/utils/is";
 
 import "animate.css";
 import "virtual:windi.css";
@@ -33,7 +33,6 @@ import {
   IconifyIconOnline,
   FontIcon
 } from "./components/ReIcon";
-import useEmComponent from "./plugins/em-component";
 app.component("IconifyIconOffline", IconifyIconOffline);
 app.component("IconifyIconOnline", IconifyIconOnline);
 app.component("FontIcon", FontIcon);
@@ -50,12 +49,4 @@ Promise.all([serverConfigPromise, userInfoPromise]).then(async results => {
   injectResponsiveStorage(app, config);
   app.use(MotionPlugin).use(useI18n).use(useElementPlus).use(useEmComponent);
   app.mount("#app");
-
-  // if (!isEmpty(userInfo) && router.currentRoute.value.path === "/login") {
-  //   // 已登录的用户访问登录界面，默认重定向到首页
-  //   window.location.replace(location.origin);
-  // } else if (isEmpty(userInfo) && router.currentRoute.value.path !== "/login") {
-  //   // 非登录用户直接访问其他界面，重定向到登录界面
-  //   router.replace("/login");
-  // }
 });
