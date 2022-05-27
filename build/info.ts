@@ -59,9 +59,9 @@ export function viteBuildInfo(): Plugin {
         console.log(
           bold(
             green(
-              `👏欢迎使用${blue(
-                "[vue-pure-admin]"
-              )}，如果您感觉不错，记得点击后面链接给个star哦💖 https://github.com/xiaoxian521/vue-pure-admin`
+              `👏👏👏欢迎使用${blue(
+                "[技术三组的脚手架Vue3.2+Pinia+Sass+ElementPlus+TS]"
+              )}，有问题请联系`
             )
           )
         );
