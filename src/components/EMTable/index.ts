@@ -109,6 +109,7 @@ const createMainContainer = (
   const tableDefaultNodes = instance.$slots.default
     ? instance.$slots.default()
     : [];
+
   const columns = getTableColumns(tableDefaultNodes);
 
   const updateColumns = (filterColumns?: Array<Column>) => {
@@ -153,7 +154,7 @@ const createMainContainer = (
   ) as any[];
   if (_filterColumns) {
     const filterVnodes = vnodes.filter(node => {
-      if (node.props.label === undefined) {
+      if (!node.props || node.props.label === undefined) {
         return node;
       }
       const find = _filterColumns.find(item => item.label === node.props.label);

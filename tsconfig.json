@@ -33,7 +33,8 @@
     "src/**/*.vue",
     "types/*.d.ts",
     "mock/*.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "src/views/demo/jsx-api/index.tsx"
   ],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }

@@ -63,6 +63,16 @@ const demoRouter = {
       path: "/demo/render/api",
       name: "demo-render-api",
       component: () => import("/@/views/demo/render-api/index.vue")
+    },
+    {
+      meta: {
+        title: $t("demo.jsx-api"),
+        i18n: true,
+        access: []
+      },
+      path: "/demo/jsx/api",
+      name: "demo-jsx-api",
+      component: () => import("../../views/demo/jsx-api/index.jsx")
     }
   ]
 };

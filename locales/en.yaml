@@ -30,7 +30,7 @@ menus:
   permissionButton: Button Permission
 system:
   system: System Manage
-  user: User Manage,
+  user: User Manage
   role: Role Manage
 demo:
   home: Vue3.x Demo
