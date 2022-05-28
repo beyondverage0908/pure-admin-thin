@@ -215,7 +215,7 @@ const createFooterbar = (instance: any, props: any, emit: Emits): VNode => {
           pageSize: currentPageSize.value,
           page: currentPage.value
         });
-        emit("update:current", current.value);
+        emit("update:current", currentPage.value);
       },
       onSizeChange: v => {
         currentPageSize.value = v;

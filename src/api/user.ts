@@ -14,3 +14,8 @@ export const getLogin = (data: object): HttpResponseType => {
 export const refreshToken = (data: object): HttpResponseType => {
   return http.request("post", "/refreshToken", { data });
 };
+
+// 获取用户列表
+export const getUserList = (params: object): HttpResponseType => {
+  return http.request("get", "/users/page", { params });
+};

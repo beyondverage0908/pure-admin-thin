@@ -204,6 +204,31 @@ export const appendRoleUsers = (): MockType => ({
     };
   }
 });
+// 获取用户列表
+export const getUserList = (): MockType => ({
+  url: "/p2hmgr/api/users/page",
+  method: Method.get,
+  response: () => {
+    const tableList = Array.from({ length: Date.now() % 100 }, (_, index) => ({
+      userId: 1 + index,
+      userName: "test" + index,
+      realName: "zjw" + index,
+      phone: "18516133628",
+      email: "test@163.com",
+      state: 1,
+      sysFlag: "1"
+    }));
+    return {
+      ...messageBaseInfo,
+      data: {
+        list: tableList,
+        currPage: 1,
+        totalCount: tableList.length,
+        totalPage: 1
+      }
+    };
+  }
+});
 
 export default [
   getPrivs(),
@@ -216,5 +241,6 @@ export default [
   getAppendRoleUsers(),
   appendRoleUsers(),
   addPrivs(),
-  getRolePrivs()
+  getRolePrivs(),
+  getUserList()
 ] as MockMethod[];
