@@ -2,11 +2,16 @@
 import { ref, computed, reactive } from "vue";
 import { UserRow, SysFlag } from "../type";
 import type { FormRules, FormInstance } from "element-plus";
+import { successMessage } from "/@/utils/message";
+import { addUser, editUser } from "/@/api/user";
+
 const visiable = ref<boolean>(false);
 const ruleFormRef = ref<FormInstance>(null);
-let user = reactive<UserRow>({
-  sysFlag: SysFlag.enable
-} as UserRow);
+let form = reactive<{ user: UserRow }>({
+  user: {
+    sysFlag: SysFlag.enable
+  }
+});
 const rules = reactive<FormRules>({
   userName: [{ required: true, message: "不能为空", trigger: "blur" }],
   realName: [{ required: true, message: "不能为空", trigger: "blur" }],
@@ -14,7 +19,8 @@ const rules = reactive<FormRules>({
   email: [
     { required: true, message: "不能为空", trigger: "blur" },
     { type: "email", message: "请按邮箱格式填写", trigger: "blur" }
-  ]
+  ],
+  userPwd: [{ required: true, message: "不能为空", trigger: "blur" }]
 });
 const sysFlagLabelList = ref([
   { label: "禁用", value: SysFlag.disabled },
@@ -26,7 +32,7 @@ interface Emits {
 }
 const emit = defineEmits<Emits>();
 
-const isEdit = computed(() => !!user);
+const isEdit = computed(() => !!form.user.userId);
 const title = computed(() => {
   if (isEdit.value) {
     return "用户编辑";
@@ -35,26 +41,43 @@ const title = computed(() => {
 });
 
 const hide = () => {
-  user = {
-    userId: 0,
-    userName: "",
-    realName: "",
-    sysFlag: SysFlag.enable,
-    state: 1
+  form.user = {
+    sysFlag: SysFlag.enable
   };
   visiable.value = false;
 };
-const show = (row: UserRow) => {
-  if (row) user = row;
+const show = (row?: UserRow) => {
+  if (row) form.user = row;
   visiable.value = true;
 };
-const handleSubmit = async (form: FormInstance | undefined) => {
-  if (!form) return;
+
+const handleAddUser = async () => {
+  const data = await addUser(form.user);
+  if (data && data.success) {
+    emit("submit", true);
+    hide();
+    successMessage("添加用户成功");
+  }
+};
+const handleEditUser = async () => {
+  const data = await editUser(form.user.userId, form.user);
+  if (data && data.success) {
+    emit("submit", true);
+    hide();
+    successMessage("编辑用户成功");
+  }
+};
+
+const handleSubmit = async (formInstance: FormInstance | undefined) => {
+  if (!formInstance) return;
   await ruleFormRef.value.validate(valid => {
-    if (valid) {
-      console.log(user);
-      emit("submit", true);
-      hide();
+    if (!valid) {
+      return;
+    }
+    if (isEdit.value) {
+      handleEditUser();
+    } else {
+      handleAddUser();
     }
   });
 };
@@ -64,22 +87,30 @@ defineExpose({
 });
 </script>
 <template>
-  <el-dialog v-model="visiable" :title="title" destroy-on-close>
-    <el-form ref="ruleFormRef" :model="user" :rules="rules" label-width="120px">
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="user.userName" />
+  <el-dialog v-model="visiable" :title="title" destroy-on-close :width="600">
+    <el-form
+      ref="ruleFormRef"
+      :model="form.user"
+      :rules="rules"
+      label-width="120px"
+    >
+      <el-form-item label="用户名" prop="userName" v-if="!isEdit">
+        <el-input v-model="form.user.userName" />
       </el-form-item>
       <el-form-item label="姓名" prop="realName">
-        <el-input v-model="user.realName" />
+        <el-input v-model="form.user.realName" />
+      </el-form-item>
+      <el-form-item label="密码" prop="userPwd" v-if="!isEdit">
+        <el-input v-model="form.user.userPwd" />
       </el-form-item>
       <el-form-item label="手机号" prop="phone">
-        <el-input v-model="user.phone" />
+        <el-input v-model="form.user.phone" />
       </el-form-item>
       <el-form-item label="邮箱地址" prop="email">
-        <el-input v-model="user.email" />
+        <el-input v-model="form.user.email" />
       </el-form-item>
       <el-form-item label="是否禁用" prop="sysFlag">
-        <el-radio-group v-model="user.sysFlag">
+        <el-radio-group v-model="form.user.sysFlag">
           <el-radio
             v-for="item in sysFlagLabelList"
             :label="item.value"

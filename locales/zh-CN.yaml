@@ -34,6 +34,7 @@ system:
   role: 角色管理
 demo:
   home: Vue3示例界面
+  multilevel: 多层级菜单
   tablepage: TABLE页面
   todo: TODO页面
   option-api: OptionApi页面

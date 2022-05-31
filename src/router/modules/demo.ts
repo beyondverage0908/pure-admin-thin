@@ -16,26 +16,6 @@ const demoRouter = {
   children: [
     {
       meta: {
-        title: $t("demo.tablepage"),
-        i18n: true,
-        access: ["c-proprietary-business"]
-      },
-      path: "/demo/table/index",
-      name: "demo-table",
-      component: () => import("/@/views/demo/table/index.vue")
-    },
-    {
-      meta: {
-        title: $t("demo.todo"),
-        i18n: true,
-        access: ["c-work-flow"]
-      },
-      path: "/demo/todo",
-      name: "demo-todo",
-      component: () => import("/@/views/demo/todo/index.vue")
-    },
-    {
-      meta: {
         title: $t("demo.option-api"),
         i18n: true,
         access: []
@@ -73,6 +53,41 @@ const demoRouter = {
       path: "/demo/jsx/api",
       name: "demo-jsx-api",
       component: () => import("../../views/demo/jsx-api/index.jsx")
+    },
+    {
+      meta: {
+        title: $t("demo.multilevel"),
+        icon: "office-building",
+        i18n: true,
+        keepAlive: true
+      },
+      path: "/demo/level",
+      name: "demo-level",
+      redirect: "/demo/table",
+      children: [
+        {
+          meta: {
+            title: $t("demo.tablepage"),
+            i18n: true,
+            access: ["c-proprietary-business"],
+            keepAlive: true
+          },
+          path: "/demo/table",
+          name: "demo-table",
+          component: () => import("/@/views/demo/table/index.vue")
+        },
+        {
+          meta: {
+            title: $t("demo.todo"),
+            i18n: true,
+            access: ["c-work-flow"],
+            keepAlive: true
+          },
+          path: "/demo/todo",
+          name: "demo-todo",
+          component: () => import("/@/views/demo/todo/index.vue")
+        }
+      ]
     }
   ]
 };

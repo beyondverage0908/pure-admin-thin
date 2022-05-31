@@ -110,9 +110,10 @@ export function useElementPlus(app: App) {
   components.forEach((component: Component) => {
     app.component(component.name, component);
   });
-  for (const name in ElementPlusVueIcons) {
+  // 注册element-plus的icon
+  Object.keys(ElementPlusVueIcons).forEach(name => {
     app.component(name, ElementPlusVueIcons[name]);
-  }
+  });
   // 注册指令
   plugins.forEach(plugin => {
     app.use(plugin);

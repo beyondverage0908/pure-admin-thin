@@ -1,5 +1,6 @@
 <template>
   <div>
+    <search-header @query="handleQuery" />
     <em-table
       v-loading="isLoading"
       :data="tableData"
@@ -29,26 +30,38 @@
           />
         </template>
       </el-table-column>
+      <el-table-column label="编辑">
+        <template #default="{ row }">
+          <el-button size="small" @click="handleToEdit(row)">编辑</el-button>
+          <el-button size="small" @click="handleResetPassword(row)"
+            >重置密码</el-button
+          >
+        </template>
+      </el-table-column>
       <template #toolbarLeft>
         <el-button icon="plus" type="primary" @click="handleAddUser"
           >新增用户</el-button
         >
       </template>
     </em-table>
-    <user-modal ref="userModalRef" />
+    <user-modal ref="userModalRef" @submit="handleSubmit" />
   </div>
 </template>
 <script setup lang="ts">
 import UserModal from "./components/modal.vue";
+import SearchHeader from "./components/search-header.vue";
 import { UserRow, Preset } from "./type";
 import { ref, onMounted, watch } from "vue";
-import { getUserList } from "/@/api/user";
+import { getUserList, resetPassword } from "/@/api/user";
+import { successMessage } from "/@/utils/message";
+
 const tableData = ref<UserRow[]>();
 const currPage = ref(1);
 const pageSize = ref(20);
 const total = ref(0);
 const isLoading = ref<boolean>(false);
 const userModalRef = ref<InstanceType<typeof UserModal>>();
+let _query = null;
 
 const stateFormatter = (user: UserRow) => {
   if (user.state === Preset.yes) {
@@ -63,7 +76,8 @@ async function getUserDataList() {
   isLoading.value = true;
   const data = await getUserList({
     currPage: currPage.value,
-    pageSize: pageSize.value
+    pageSize: pageSize.value,
+    ..._query
   });
   isLoading.value = false;
   if (data && data.success) {
@@ -81,9 +95,31 @@ watch(pageSize, v => {
   pageSize.value = v;
   getUserDataList();
 });
-
+// 添加
 const handleAddUser = () => {
   userModalRef.value.show();
+};
+// 编辑
+const handleToEdit = (user: UserRow) => {
+  userModalRef.value.show(user);
+};
+const handleSubmit = (result: boolean) => {
+  if (result) {
+    getUserDataList();
+  }
+};
+const handleResetPassword = async (user: UserRow) => {
+  const data = await resetPassword(user.userId);
+  if (data && data.success) {
+    successMessage("重置密码成功");
+    getUserDataList();
+  }
+};
+
+// 查询数据
+const handleQuery = query => {
+  _query = query;
+  getUserDataList();
 };
 
 onMounted(() => {

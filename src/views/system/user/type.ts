@@ -10,11 +10,12 @@ export enum Preset {
 }
 // 用户信息
 export type UserRow = {
-  userId: number;
-  userName: string;
-  realName: string;
+  userId?: number;
+  userName?: string;
+  realName?: string;
   phone?: string;
   email?: string;
-  state: Preset;
-  sysFlag: SysFlag;
+  state?: Preset;
+  sysFlag?: SysFlag;
+  userPwd?: string;
 };

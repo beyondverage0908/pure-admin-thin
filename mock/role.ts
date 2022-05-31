@@ -216,7 +216,8 @@ export const getUserList = (): MockType => ({
       phone: "18516133628",
       email: "test@163.com",
       state: 1,
-      sysFlag: "1"
+      sysFlag: "1",
+      userPwd: "Abc@1234-" + index
     }));
     return {
       ...messageBaseInfo,
@@ -226,6 +227,36 @@ export const getUserList = (): MockType => ({
         totalCount: tableList.length,
         totalPage: 1
       }
+    };
+  }
+});
+// 添加用户
+export const addUser = (): MockType => ({
+  url: "/p2hmgr/api/users",
+  method: Method.post,
+  response: () => {
+    return {
+      ...messageBaseInfo
+    };
+  }
+});
+// 编辑用户
+export const editUser = (): MockType => ({
+  url: /\/p2hmgr\/api\/users\/\d/,
+  method: Method.put,
+  response: () => {
+    return {
+      ...messageBaseInfo
+    };
+  }
+});
+// 重置密码
+export const resetPassword = (): MockType => ({
+  url: /\/p2hmgr\/api\/users\/\d\/reset-pwd/,
+  method: Method.put,
+  response: () => {
+    return {
+      ...messageBaseInfo
     };
   }
 });
@@ -242,5 +273,8 @@ export default [
   appendRoleUsers(),
   addPrivs(),
   getRolePrivs(),
-  getUserList()
+  getUserList(),
+  addUser(),
+  editUser(),
+  resetPassword()
 ] as MockMethod[];

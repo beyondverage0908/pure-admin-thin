@@ -19,3 +19,18 @@ export const refreshToken = (data: object): HttpResponseType => {
 export const getUserList = (params: object): HttpResponseType => {
   return http.request("get", "/users/page", { params });
 };
+// 添加用户
+export const addUser = (data: object): HttpResponseType => {
+  return http.request("post", "/users", { data });
+};
+// 编辑用户
+export const editUser = (
+  userId: string | number,
+  data: object
+): HttpResponseType => {
+  return http.request("put", `/users/${userId}`, { data });
+};
+// 重置密码
+export const resetPassword = (userId: string | number): HttpResponseType => {
+  return http.request("put", `/users/${userId}/reset-pwd`);
+};
