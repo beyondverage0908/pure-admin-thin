@@ -13,9 +13,10 @@ import { usePermissionStoreHook } from "/@/store/modules/permission";
 const props = defineProps({
   fixedHeader: Boolean
 });
-const keepAlive: Boolean = ref(
+const keepAlive = ref<boolean>(
   getCurrentInstance().appContext.config.globalProperties.$config?.KeepAlive
 );
+
 const instance =
   getCurrentInstance().appContext.app.config.globalProperties.$storage;
 
